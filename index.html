@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="shortcut icon" href="/img/bomjara_icon.png" type="image/png">
+    <link rel="stylesheet" href="index.css">
+    <title>Bomjara</title>
+</head>
+<body>
+    <div class="header">
+        <div class="header-title">
+            <p>BOMJARA</p>
+        </div>
+    </div>
+    <div class="content">
+        <div class="main-content">
+            <div class="main-item">
+                <div class="label">
+                    Имя:
+                </div>
+                <div id="name_obj" class="main-value">
+                </div>
+            </div>
+            <div class="main-item">
+                <div class="label">
+                    Возраст:
+                </div>
+                <div id="age_obj" class="main-value">
+                </div>
+            </div>
+            <div class="main-item">
+                <div class="label">
+                    Статус:
+                </div>
+                <div id="status_obj" class="main-value">
+                </div>
+            </div>
+            <div class="main-item">
+                <div class="label">
+                    Транспорт:
+                </div>
+                <div id="vehicle_obj" class="main-value">
+                </div>
+            </div>
+            <div class="main-item">
+                <div class="label">
+                    Недвижимость:
+                </div>
+                <div id="build_obj" class="main-value">
+                </div>
+            </div>
+            <div class="main-item">
+                <div class="label">
+                    Рейтинг:
+                </div>
+                <div id="rating_obj" class="main-value">
+                </div>
+            </div>
+        </div>
+        <div class="health-content div-off">
+            <p style="text-align: center;">Здоровье</p>
+        </div>
+        <div class="fun-content div-off">
+            <p style="text-align: center;">Развлечение</p>
+        </div>
+        <div class="work-content div-off">
+            <p style="text-align: center;">Работа</p>
+        </div>
+        <div class="item-content div-off">
+            <p style="text-align: center;">Собственность</p>
+        </div>
+    </div>
+    <div class="menu">
+        <form>
+            <div class="menu-item">
+                <input type="radio" name="menu" id="mainMenu" value="main">
+                <label for="mainMenu">Меню</label>
+
+                <input type="radio" name="menu" id="healthMenu" value="health">
+                <label for="healthMenu">Здоровье</label>
+                
+                <input type="radio" name="menu" id="funMenu" value="fun">
+                <label for="funMenu">Развлечение</label>
+                
+                <input type="radio" name="menu" id="workMenu" value="work">
+                <label for="workMenu">Работа</label>
+                
+                <input type="radio" name="menu" id="itemMenu" value="item">
+                <label for="itemMenu">Собсвтенность</label>
+            </div>
+        </from>
+    </div>
+
+    
+    <!-- Скрипты -->
+
+    <!-- Скрипт первоначального окна -->
+    <script>
+        document.querySelector('input#mainMenu').checked = true;
+    </script>
+    <script src="/js/demoObj.js"></script>
+    <script src="/js/actionOnMenu.js"></script>
+</body>
+</html>

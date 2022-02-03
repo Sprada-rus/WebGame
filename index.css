@@ -1,0 +1,75 @@
+body{
+    position: fixed;
+    width: 100%;
+}
+
+.header, .wrapper, .content, .menu{
+    width: 1200px;
+    margin: 0 auto;
+}
+
+.header-title p{
+    text-align: center;
+    font-size: 2rem;
+}
+
+.header{
+    height: 10%;
+}
+
+/* .wrapper{
+    display: flex;
+    flex-direction: column;
+} */
+
+/* .content{
+    flex: auto 0 auto;
+} */
+
+.menu{
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+}
+
+.menu-item:first-of-type{
+    display: flex;
+    align-items: flex-start;
+    margin-bottom: 5px;
+    bottom: 0;
+}
+
+.menu-item input[type=radio]{
+    display: none;
+}
+.menu-item input[type=radio]+label{
+    display: inline-block;
+    padding: 10px 10px;
+    width: 20%;
+    text-align: center;
+    border: 1px solid;
+    cursor: pointer;
+}
+
+.menu-item input[type=radio]:active+label{
+    background-color: #8a8a8a;
+}
+
+.menu-item input[type=radio]:checked+label{
+    background-color: #000;
+    color: #fff;
+}
+
+.main-item{
+    display: flex;
+    flex-wrap: nowrap;
+}
+
+.main-item .label {
+    padding-right: 10px;
+}
+
+.div-off{
+    display: none;
+}

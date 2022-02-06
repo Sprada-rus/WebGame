@@ -1,5 +1,5 @@
 body{
-    position: fixed;
+    /* position: fixed; */
     width: 100%;
 }
 
@@ -16,15 +16,6 @@ body{
 .header{
     height: 10%;
 }
-
-/* .wrapper{
-    display: flex;
-    flex-direction: column;
-} */
-
-/* .content{
-    flex: auto 0 auto;
-} */
 
 .menu{
     position: fixed;
@@ -50,6 +41,7 @@ body{
     text-align: center;
     border: 1px solid;
     cursor: pointer;
+    background-color: #fff;
 }
 
 .menu-item input[type=radio]:active+label{
@@ -72,4 +64,45 @@ body{
 
 .div-off{
     display: none;
+}
+
+.group-btn{
+    padding: 0 10%;
+}
+
+.group-btn p{
+    font-weight: 700;
+    font-size: 16pt;
+}
+
+.group-btn .btn{
+    text-align: center;
+    padding: 25px;
+    background: #000;
+    border: #fff 1px solid;
+    border-radius: 50px;
+    color: #fff;
+    margin-bottom: 15px;
+    cursor: pointer;
+    user-select: none;
+    transition: background-color 50ms ease-in;
+}
+
+.content{
+    margin-bottom: 5%;
+}
+
+.health-content {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+.health-content p,
+.health-content div{
+    margin: 0 0 20px;
+}
+
+.group-btn .btn:active{
+    background-color: #686868;
 }

@@ -27,24 +27,42 @@ setValueMenu()
 
 
 //Хранение объектов для каждого пункута меню
-const healthPage = {
-    first_service : {
-        price: 0,
-        action: () => {
-            demoObj.healt += 5;
-            console.log('Здоровье:' + demoObj.healt);
+const PAGES = {
+    health_content:{
+        first_service : {
+            price: 0,
+            action: () => {
+                demoObj.healt += 5;
+                console.log('Здоровье:' + demoObj.healt);
+            },
         },
-    },
-    second_service : {
-
-    },
-    third_service : {
-
-    },
-    fourth_service : {
-
-    },
-    fifth_service : {
-
+        second_service : {
+            price: 0,
+            action: () => {
+                demoObj.healt += 8;
+                console.log('Здоровье:' + demoObj.healt);
+            },
+        },
+        third_service : {
+            price: 0,
+            action: () => {
+                demoObj.healt += 11;
+                console.log('Здоровье:' + demoObj.healt);
+            },
+        },
+        fourth_service : {
+            price: 0,
+            action: () => {
+                demoObj.healt += 12;
+                console.log('Здоровье:' + demoObj.healt);
+            },
+        },
+        fifth_service : {
+            price: 0,
+            action: () => {
+                demoObj.healt += 50;
+                console.log('Здоровье:' + demoObj.healt);
+            },
+        }
     }
 }

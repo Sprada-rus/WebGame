@@ -1,12 +1,18 @@
 const setActionForButton = (e) => {
-    const elId = e.target.id
-    const {action, price} = healthPage[elId];
-
-    if(price && demoObj.money < price){
-        alert('Денег у тебя нет!');
-    } else {
-        action();
+    const elId = e.target.id;
+    const page = PAGES[e.target.parentElement.parentElement.classList[0].replace('-', '_')]
+    if(!page || !page[elId]){
+        return;
+    }else{
+        const {action, price} = page[elId];
+        if(price && demoObj.money < price){
+            alert('Денег у тебя нет!');
+        } else {
+            action();
+        }
     }
+
+    
 }
 
 /*

@@ -4,7 +4,10 @@ const demoObj = {
     status_obj: 'Бомж',
     vehicle_obj: null,
     build_obj: null,
-    rating_obj: 0
+    rating_obj: 0,
+    healt: 50,
+    money: 0,
+    condition: 50
 }
 
 
@@ -20,3 +23,28 @@ const setValueMenu = () => {
 }
 
 setValueMenu()
+
+
+
+//Хранение объектов для каждого пункута меню
+const healthPage = {
+    first_service : {
+        price: 0,
+        action: () => {
+            demoObj.healt += 5;
+            console.log('Здоровье:' + demoObj.healt);
+        },
+    },
+    second_service : {
+
+    },
+    third_service : {
+
+    },
+    fourth_service : {
+
+    },
+    fifth_service : {
+
+    }
+}

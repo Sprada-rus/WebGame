@@ -1,16 +1,19 @@
 body{
-    /* position: fixed; */
     width: 100%;
+    -moz-user-select: none;
+    -khtml-user-select: none;
+    user-select: none; 
 }
 
-.header, .wrapper, .content, .menu{
+.header, .wrapper, .menu, .body-content{
     width: 1200px;
     margin: 0 auto;
 }
 
-.header-title p{
+.header-title{
     text-align: center;
-    font-size: 2rem;
+    font-size: 24pt;
+    margin-bottom: 25px;
 }
 
 .header{
@@ -34,6 +37,7 @@ body{
 .menu-item input[type=radio]{
     display: none;
 }
+
 .menu-item input[type=radio]+label{
     display: inline-block;
     padding: 10px 10px;
@@ -70,7 +74,7 @@ body{
     padding: 0 10%;
 }
 
-.group-btn p{
+.group-btn .title{
     font-weight: 700;
     font-size: 16pt;
 }

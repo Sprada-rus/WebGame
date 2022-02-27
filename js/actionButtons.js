@@ -4,7 +4,7 @@ const setActionForButton = (e) => {
     if(!page || !page[elId]){
         return;
     }else{
-        const {action, price} = page[elId];
+        const {action, price, necessary_item} = page[elId];
         if(price && demoObj.money < price){
             alert('Денег у тебя нет!');
         } else {

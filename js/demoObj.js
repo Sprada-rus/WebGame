@@ -10,12 +10,10 @@ const demoObj = {
     condition: 50,
     changeHealth: (num) => {
         const healthNode = document.querySelector('#health_indication');
-        let value = parseInt(healthNode.textContent);
-
-        healthNode.textContent = (value + num >= 100 
+        demoObj.health = (demoObj.health + num >= 100 
             ? 100 
-            : (value + num < 0 ? 0 : value + num)) + '';
-        console.log('Здоровье:' + healthNode.textContent);
+            : (demoObj.health + num <= 0 ? 0 : demoObj.health + num));
+        healthNode.textContent = demoObj.health + '';
     }
 }
 
@@ -31,9 +29,18 @@ const setValueMenu = () => {
     }
 }
 
-setValueMenu()
+const setValueOnIndicators = () => {
+    const iHealth = document.querySelector('#health_indication');
+    const iCondition = document.querySelector('#condition_indication');
+    const iMoney = document.querySelector('#money_indication');
 
+    iHealth.textContent = demoObj.health;
+    iCondition.textContent = demoObj.condition;
+    iMoney.textContent = demoObj.money;
+}
 
+setValueMenu();
+setValueOnIndicators();
 
 
 

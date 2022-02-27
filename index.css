@@ -20,6 +20,32 @@ body{
     height: 10%;
 }
 
+.line div{
+    display: inline-block;
+}
+
+#indicators{
+    display: flex;
+    margin: 0 auto;
+    justify-content: center;
+    flex-basis: 10%;
+}
+
+#indicators .line{
+    display: flex;
+    flex-basis: 250px;
+    justify-content: center;
+}
+
+.indicator-img{
+    width: 10%;
+}
+
+.indicators_value{
+    font-size: 20pt;
+    margin-left: 10px;
+    font-weight: 600;
+}
 .menu{
     position: fixed;
     bottom: 0;

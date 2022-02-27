@@ -5,9 +5,18 @@ const demoObj = {
     vehicle_obj: null,
     build_obj: null,
     rating_obj: 0,
-    healt: 50,
+    health: 50,
     money: 0,
-    condition: 50
+    condition: 50,
+    changeHealth: (num) => {
+        const healthNode = document.querySelector('#health_indication');
+        let value = parseInt(healthNode.textContent);
+
+        healthNode.textContent = (value + num >= 100 
+            ? 100 
+            : (value + num < 0 ? 0 : value + num)) + '';
+        console.log('Здоровье:' + healthNode.textContent);
+    }
 }
 
 
@@ -26,43 +35,48 @@ setValueMenu()
 
 
 
-//Хранение объектов для каждого пункута меню
+
+
+//Хранение объектов для каждой кнопки в разделах
 const PAGES = {
     health_content:{
+        //Здоровье: Услуги
         first_service : {
             price: 0,
             action: () => {
-                demoObj.healt += 5;
-                console.log('Здоровье:' + demoObj.healt);
+                demoObj.changeHealth(5);                
             },
         },
         second_service : {
             price: 0,
             action: () => {
-                demoObj.healt += 8;
-                console.log('Здоровье:' + demoObj.healt);
+                demoObj.changeHealth(8);
             },
         },
         third_service : {
             price: 0,
             action: () => {
-                demoObj.healt += 11;
-                console.log('Здоровье:' + demoObj.healt);
+                demoObj.changeHealth(11);
             },
         },
         fourth_service : {
             price: 0,
             action: () => {
-                demoObj.healt += 12;
-                console.log('Здоровье:' + demoObj.healt);
+                demoObj.changeHealth(12);
             },
         },
         fifth_service : {
             price: 0,
             action: () => {
-                demoObj.healt += 50;
-                console.log('Здоровье:' + demoObj.healt);
+                demoObj.changeHealth(50);
             },
+        },
+        // Здоровье: Действие
+        first_action : {
+            necessary_item: 'Кросовки',
+            action: () => {
+                demoObj.changeHealth(5);
+            }
         }
     }
 }

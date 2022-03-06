@@ -5,6 +5,10 @@ body{
     user-select: none; 
 }
 
+body::-webkit-scrollbar{
+    width: 0;
+}
+
 .header, .wrapper, .menu, .body-content{
     width: 1200px;
     margin: 0 auto;

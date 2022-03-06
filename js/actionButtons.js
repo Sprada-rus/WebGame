@@ -1,3 +1,4 @@
+//Функция для взаимодействия с кнопками
 const setActionForButton = (e) => {
     const elId = e.target.id;
     const page = PAGES[e.target.parentElement.parentElement.classList[0].replace('-', '_')]
@@ -20,7 +21,6 @@ const setActionForButton = (e) => {
 */
 const checkContent = (content, action) => {
     if (action === 'add'){
-        // console.log(content);
         for(let i = 0; i < content.children.length; i++){
             const child = content.children[i];
             if (!child.classList.contains('group-title') && child.nodeName.toLowerCase !== 'p'){

@@ -1,3 +1,4 @@
+//Пользовательский объект демовариант...
 const demoObj = {
     name_obj: 'Василий',
     age_obj: 24,
@@ -8,16 +9,78 @@ const demoObj = {
     health: 50,
     money: 0,
     condition: 50,
-    changeHealth: (num) => {
+    days: 0,
+    dangerDays: 0,
+    changeHealth: function(num, needNextDay = true) {
         const healthNode = document.querySelector('#health_indication');
-        demoObj.health = (demoObj.health + num >= 100 
+        this.health = (this.health + num >= 100 
             ? 100 
-            : (demoObj.health + num <= 0 ? 0 : demoObj.health + num));
-        healthNode.textContent = demoObj.health + '';
+            : (this.health + num <= 0 ? 0 : this.health + num));
+        healthNode.textContent = this.health + '';
+        
+        if (needNextDay) {
+            this.nextDay();
+        }
+    },
+    changeMoney: function(num, needNextDay = true) {
+        const moneyNode = document.querySelector('#money_indication');
+        this.money = (this.money + num >= 100 
+            ? 100 
+            : (this.money + num <= 0 ? 0 : this.money + num));
+        moneyNode.textContent = this.money + '';
+        
+        if (needNextDay) {
+            this.nextDay();
+        }
+    },
+    changeCondition: function(num, needNextDay = true) {
+        const conditionNode = document.querySelector('#condition_indication');
+        this.condition = (this.condition + num >= 100 
+            ? 100 
+            : (this.condition + num <= 0 ? 0 : this.condition + num));
+        conditionNode.textContent = this.condition + '';
+        
+        if (needNextDay) {
+            this.nextDay();
+        }
+    },
+    nextDay: function(){
+        this.days++;
+        if (this.days === 365){
+            this.days = 0;
+            this.age_obj++;
+        }
+        console.log(`Test obj: age = ${this.age_obj}, days = ${this.days}`);
+
+        this.changeHealth(-(10 * 1), false);
+        this.changeMoney(-10 * 1, false);
+        this.changeCondition(-10 * 1, false);
+
+        this.checkConditon();
+    },
+    checkConditon: function(){
+        if (this.dangerDays >= 3){
+            console.log('GAME OVER!');
+            return;
+        }
+
+        const dangerCondition = [];
+        this.health === 0 ? dangerCondition.push('здоровье') : null;
+        this.money <= 0 ? dangerCondition.push('деньги') : null;
+        this.condition === 0 ? dangerCondition.push('настроение') : null;
+
+        if (dangerCondition.length !== 0){
+            let text = dangerCondition[0].charAt(0).toUpperCase() + dangerCondition.join(', ').slice(1);
+            
+            console.log(`${text} критично малы, решите проблемы за 3 дня или вы проиграете!`);
+            this.dangerDays++;
+        } else {
+            this.dangerDays = 0;
+        }
     }
 }
 
-
+//Первая загрузка страницы, проставление значений в разделе "Меню"
 const setValueMenu = () => {
     let mainContent = document.querySelector('.main-content');
 
@@ -28,7 +91,7 @@ const setValueMenu = () => {
         document.querySelector(`#${elementId}`).textContent = nodeValue;
     }
 }
-
+//Проставление значения для индикаторов "Здоровье, деньги, настроение"
 const setValueOnIndicators = () => {
     const iHealth = document.querySelector('#health_indication');
     const iCondition = document.querySelector('#condition_indication');

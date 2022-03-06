@@ -1,3 +1,4 @@
+//Проверка контента для выбранного раздела
 const addActionForGroup = (content) => {
     for(let i = 0; i < content.children.length; i++){
         if(content.children[i].nodeName.toLowerCase() === 'div' && content.children[i].classList.contains('group-btn')){
@@ -6,10 +7,7 @@ const addActionForGroup = (content) => {
     }
 }
 
-// function addActionForGroup(content){
-//     console.log(content.children)
-// }
-
+//Функция слушателя для меню
 const actionOnMenu = (e) => {
     let checkedNode = document.querySelector('input[name="menu"]:checked');
     const content = document.querySelector(`.${checkedNode.defaultValue}-content`);

@@ -14,6 +14,10 @@ body::-webkit-scrollbar{
     margin: 0 auto;
 }
 
+.header{
+    margin-bottom: 30px;
+}
+
 .header-title{
     text-align: center;
     font-size: 24pt;
@@ -55,6 +59,14 @@ body::-webkit-scrollbar{
     bottom: 0;
     left: 0;
     right: 0;
+}
+
+.menu-item{
+    overflow: scroll;
+}
+
+.menu-item::-webkit-scrollbar{
+    width: 0;
 }
 
 .menu-item:first-of-type{
@@ -102,11 +114,7 @@ body::-webkit-scrollbar{
 
 .group-btn{
     padding: 0 10%;
-}
-
-.group-btn .title{
-    font-weight: 700;
-    font-size: 16pt;
+    margin-bottom: 50px;
 }
 
 .group-btn .btn{
@@ -137,4 +145,12 @@ body::-webkit-scrollbar{
 
 .group-btn .btn:active{
     background-color: #686868;
+}
+
+.group-title{
+    text-align: center;
+    margin: 0 0 10px 0;
+    padding: 20px 0;
+    border: #000 solid 2px;
+    border-radius: 20px;
 }

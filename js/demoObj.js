@@ -24,9 +24,7 @@ const demoObj = {
     },
     changeMoney: function(num, needNextDay = true) {
         const moneyNode = document.querySelector('#money_indication');
-        this.money = (this.money + num >= 100 
-            ? 100 
-            : (this.money + num <= 0 ? 0 : this.money + num));
+        this.money += num; 
         moneyNode.textContent = this.money + '';
         
         if (needNextDay) {

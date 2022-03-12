@@ -1,4 +1,4 @@
-//Пользовательский объект демовариант...
+//Пользовательский объект 
 const demoObj = {
     name_obj: 'Василий',
     age_obj: 24,
@@ -97,9 +97,9 @@ const setValueOnIndicators = () => {
     const iCondition = document.querySelector('#condition_indication');
     const iMoney = document.querySelector('#money_indication');
 
-    iHealth.textContent = demoObj.health;
-    iCondition.textContent = demoObj.condition;
-    iMoney.textContent = demoObj.money;
+    iHealth.innerHTML = demoObj.health;
+    iCondition.innerHTML = demoObj.condition;
+    iMoney.innerHTML = demoObj.money;
 }
 
 setValueMenu();

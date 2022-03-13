@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="shortcut icon" href="img/bomjara_icon.png" type="image/png">
     <link rel="stylesheet" href="index.css">
+    <link rel="stylesheet" href="popup_style.css">
     <title>Bomjara</title>
 </head>
 <body>
@@ -171,13 +172,26 @@
 
     
     <!-- Скрипты -->
-
+    <script src="js/popup.js"></script>
+    <script src="js/demoObj.js"></script>
+    <script src="js/actionButtons.js"></script>
+    <script src="js/actionOnMenu.js"></script>
+    
     <!-- Скрипт первоначального окна -->
     <script>
         document.querySelector('input#mainMenu').checked = true;
     </script>
-    <script src="js/demoObj.js"></script>
-    <script src="js/actionButtons.js"></script>
-    <script src="js/actionOnMenu.js"></script>
+    
+    <!-- Тест popup -->
+    <script>
+        let settingsForPopup = {
+            textContent: 'Lorem ipsum dolor sit, amet consectetur adipisicing elit. Animi, dignissimos explicabo quae illo veritatis perspiciatis quos neque a eum qui!',
+            textTitle: 'Test popup',
+            textFooter: 'Nice Test!',
+            btnHeaderClose: true,
+        }
+
+        const testPop = popup(settingsForPopup);
+    </script>
 </body>
 </html>

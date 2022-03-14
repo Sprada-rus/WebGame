@@ -39,6 +39,7 @@
 
 .popup-content{
     margin-bottom: 15px;
+    text-align: justify;
 }
 
 .popup_destroy {
@@ -49,4 +50,14 @@
 .header-close{
     border: 1px solid #000;
     cursor: pointer;
+}
+
+.popup-header{
+    border-bottom: 1px solid #000;
+    margin-bottom: 20px;
+}
+
+.popup-footer{
+    border-top: 1px solid #000;
+    padding-top: 10px;
 }

@@ -100,8 +100,52 @@ const setValueOnIndicators = () => {
     iMoney.innerHTML = demoObj.money;
 }
 
-setValueMenu();
-setValueOnIndicators();
+//Тест
+let testPopupNode = '';
+
+//Запуск приветствия
+document.addEventListener('DOMContentLoaded', () => {
+    const title = 'Добро пожаловать в Bomjara!';
+    const content = '<p>Привет игрок. Это игра демо образец возможностей программиста Sprada-rus</p>'
+    + '<p>Игра простая, но должна быть интересной. Главное что нужно, это выжить.</p>'
+    + '<p>В игре представлены вкладки, об каждой из них поподробнее</p>'
+    + '<ul>'
+    + ' <li><b>Меню</b> - тут собрана вся информация по вашему игроку.</li>'
+    + ' <li><b>Здоровье</b> - тут можно выбрать как вы будете лечить своего персонажа. Если здоровье упадет до нуля, то персонаж может умереть.</li>'
+    + ' <li><b>Развлечение</b> - тут можно выбрать как персонаж будет развлекаться. Если настроение упадет до нуля, то персонаж может умереть от скуки.</li>'
+    + ' <li><b>Работа</b> - устройте персонажа на работу, деньги так или иначе пригодяться для проживания в этом сложном мире.</li>'
+    + ' <li><b>Собственность</b> - тут собраны самые лучшие варианты для проживания и для передвижения персонажа.</li>'
+    + ' <li><b>Социальный статус</b> - собраны лучшие курсы начиная от изучения таблицы умножения и заканчивая обучением в других странах.</li>'
+    + '</ul>'
+    + '<p><b>Игра, на данном этапе, не сохраняется.</b> Если вы перезапустите страницу весь ваш прогресс будет утерян.</p>';
+
+    const btnOK = document.createElement('div');
+    btnOK.classList.add('btn');
+    btnOK.innerText = 'OK';
+
+    // btnOK
+
+    //Настройка уведомления
+    const settingsWelcome = {
+        textContent: content,
+        textTitle: title,
+        btnOnContent: [btnOK]
+    };
+
+    const welcomePopup = Popup(settingsWelcome);
+
+    btnOK.addEventListener('click', () => {
+        setValueMenu();
+        setValueOnIndicators();
+        welcomePopup.close();
+    });
+
+    welcomePopup.open();
+
+    testPopupNode = welcomePopup.popup;
+});
+
+
 
 
 

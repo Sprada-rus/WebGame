@@ -5,9 +5,9 @@
  * @param settings.textTitle is string properties
  * @param settings.textFooter is string properties
  * @param settings.btnHeaderClose is boolean properties
- * @param settings.btnOnContent is array properties
+ * @param settings.btnOnContent is node array properties
  */
-function popup(settings){
+function Popup(settings){
     const btnDestroy = !!settings.btnHeaderClose ? '<div class="popup_destroy"><span class="popup-btn-destroy header-close">X</div>' : '';
 
     const textTitle = '<div class="popup-header">'
@@ -15,15 +15,14 @@ function popup(settings){
     + `<p class="popup-title">${settings.textTitle}</p>`
     + '</div>';
 
-    const blockButton = '';
-    if (Array.isArray(settings.btnOnContent) && settings.btnOnContent.length !== 0 ){
-        settings.btnOnContent.foreach(i => blockButton += i);
-    }
+    // const blockButton = '';
+    // if (Array.isArray(settings.btnOnContent) && settings.btnOnContent.length !== 0 ){
+    //     settings.btnOnContent.foreach(i => blockButton += i);
+    // }
 
     const textContent = '<div class="popup-content">'
     + settings.textContent
-    // + Array.isArray(settings.btnOnContent) && settings.btnOnContent.length !== 0 
-    + `<div class="popup-button-block">${blockButton ? blockButton : ''}</div>`
+    + `<div class="popup-button-block"></div>`
     + '</div>';
     
     let textFooter = '<div class="popup-footer">';
@@ -49,6 +48,15 @@ function popup(settings){
             setTimeout(() => document.body.removeChild(popupNode), 800);
         })
     );
+
+    if (Array.isArray(settings.btnOnContent) && settings.btnOnContent.length !== 0){
+        for (let element of settings.btnOnContent){
+            if(element?.ELEMENT_NODE === 1){
+                popupNode.childNodes[0].childNodes[1].lastChild.appendChild(element);
+            }
+        }
+    }
+
     return {
         open(){
             popupNode.classList.add('popup-open');
@@ -57,7 +65,8 @@ function popup(settings){
             popupNode.classList.remove('popup-open');
         },
         destroy(){
-            document.body.removeChild(document.querySelector('.popup'));
-        }
+            document.body.removeChild(popupNode);
+        },
+        popup: popupNode
     };
 }

@@ -85,11 +85,17 @@ const setValueMenu = () => {
 
     for(let el of mainContent.children){
         let elementId = el.children[1].id;
+        let nodeValue = '';
+        if(demoObj[elementId].toString() === '[object Set]'){
+            nodeValue = demoObj[elementId].size > 0 ? Array.from(demoObj[elementId]).join(', ') : 'Пусто';
+        } else{
+            nodeValue = demoObj[elementId] === null ? 'Пусто' : demoObj[elementId];
+        }
 
-        let nodeValue = demoObj[elementId] === null ? 'Пусто' : demoObj[elementId];
         document.querySelector(`#${elementId}`).textContent = nodeValue;
     }
 }
+
 //Проставление значения для индикаторов "Здоровье, деньги, настроение"
 const setValueOnIndicators = () => {
     const iHealth = document.querySelector('#health_indication');
@@ -218,12 +224,45 @@ const PAGES = {
     },
     //Развлечение
     fun_content : {
+        first_fun : {
 
+        },
+        second_fun : {
+
+        },
+        third_fun : {
+
+        },
+        fourth_fun : {
+
+        },
+        fifth_fun : {
+
+        },
     },
     //Работа
     work_content : {
         bomj_work : {
             
+        },
+        shaverma_work : {
+
+        },
+        office_work : {
+
+        },
+        manager_work : {
+
+        },
+        senior_manager_work : {
+
+        },
+        ceo_work : {
+
         }
+    },
+    //Собственность
+    item_content : {
+        
     }
 }

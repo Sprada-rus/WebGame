@@ -3,8 +3,9 @@ const demoObj = {
     name_obj: 'Василий',
     age_obj: 24,
     status_obj: 'Бомж',
-    vehicle_obj: null,
-    build_obj: null,
+    education: new Set(),
+    vehicle_obj: new Set(),
+    build_obj: new Set(),
     rating_obj: 0,
     health: 50,
     money: 0,
@@ -140,7 +141,7 @@ document.addEventListener('DOMContentLoaded', () => {
         welcomePopup.destroy();
     });
 
-    setTimeout(() => welcomePopup.open(), 100);
+    setTimeout(() => welcomePopup.open(), 300);
 
     testPopupNode = welcomePopup.popup;
 });
@@ -151,30 +152,31 @@ document.addEventListener('DOMContentLoaded', () => {
 
 //Хранение объектов для каждой кнопки в разделах
 const PAGES = {
+    //Здоровье
     health_content:{
         //Здоровье: Услуги
         first_service : {
             price: 0,
             action: () => {
-                demoObj.changeHealth(5);                
+                demoObj.changeHealth(9);                
             },
         },
         second_service : {
             price: 0,
             action: () => {
-                demoObj.changeHealth(8);
+                demoObj.changeHealth(15);
             },
         },
         third_service : {
             price: 0,
             action: () => {
-                demoObj.changeHealth(11);
+                demoObj.changeHealth(25);
             },
         },
         fourth_service : {
             price: 0,
             action: () => {
-                demoObj.changeHealth(12);
+                demoObj.changeHealth(40);
             },
         },
         fifth_service : {
@@ -185,10 +187,43 @@ const PAGES = {
         },
         // Здоровье: Действие
         first_action : {
+            action: () => {
+                demoObj.changeHealth(3);
+            }
+        },
+        second_action : {
             necessary_item: 'Кросовки',
             action: () => {
-                demoObj.changeHealth(5);
+                demoObj.changeHealth(15);
             }
+        },
+        third_action : {
+            necessary_item: 'Велосипед',
+            action: () => {
+                demoObj.changeHealth(20);
+            }
+        },
+        fourth_action : {
+            price: 50000,
+            action: () => {
+                demoObj.changeHealth(45);
+            }
+        },
+        fifth_service : {
+            price: 450000,
+            action: () => {
+                demoObj.changeHealth(80);
+            }
+        }
+    },
+    //Развлечение
+    fun_content : {
+
+    },
+    //Работа
+    work_content : {
+        bomj_work : {
+            
         }
     }
 }

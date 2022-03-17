@@ -65,7 +65,8 @@ function Popup(settings){
             popupNode.classList.remove('popup-open');
         },
         destroy(){
-            document.body.removeChild(popupNode);
+            popupNode.classList.remove('popup-open');
+            setTimeout(() => document.body.removeChild(popupNode), 200);
         },
         popup: popupNode
     };

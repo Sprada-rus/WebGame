@@ -137,10 +137,10 @@ document.addEventListener('DOMContentLoaded', () => {
     btnOK.addEventListener('click', () => {
         setValueMenu();
         setValueOnIndicators();
-        welcomePopup.close();
+        welcomePopup.destroy();
     });
 
-    welcomePopup.open();
+    setTimeout(() => welcomePopup.open(), 100);
 
     testPopupNode = welcomePopup.popup;
 });

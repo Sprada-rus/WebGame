@@ -120,12 +120,13 @@ body::-webkit-scrollbar{
 
 .group-btn .btn{
     text-align: center;
-    padding: 25px;
+    padding: 25px 0;
     background: #000;
     border: #fff 1px solid;
     border-radius: 50px;
     color: #fff;
     margin-bottom: 15px;
+    width: 100%;
     cursor: pointer;
     user-select: none;
     transition: background-color 50ms ease-in;
@@ -144,15 +145,6 @@ body::-webkit-scrollbar{
 
 .content{
     margin-bottom: 5%;
-}
-
-.health-content {
-    justify-content: space-between;
-}
-
-.health-content p,
-.health-content div{
-    margin: 0 0 20px;
 }
 
 .group-btn .btn:active{

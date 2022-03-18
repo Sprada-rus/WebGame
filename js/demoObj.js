@@ -8,7 +8,14 @@ const demoObj = {
     build_obj: new Set(),
     rating_obj: 0,
     health: 50,
-    money: 0,
+    _money: 0,
+    get money() {
+        return this._money;
+    },
+    set money(value) {
+        this._money += value;
+        this.nextDay()
+    },
     condition: 50,
     days: 0,
     dangerDays: 0,
@@ -18,15 +25,6 @@ const demoObj = {
             ? 100 
             : (this.health + num <= 0 ? 0 : this.health + num));
         healthNode.textContent = this.health + '';
-        
-        if (needNextDay) {
-            this.nextDay();
-        }
-    },
-    changeMoney: function(num, needNextDay = true) {
-        const moneyNode = document.querySelector('#money_indication');
-        this.money += num; 
-        moneyNode.textContent = this.money + '';
         
         if (needNextDay) {
             this.nextDay();
@@ -225,16 +223,31 @@ const PAGES = {
     //Развлечение
     fun_content : {
         first_fun : {
-
+            price: 0,
+            action: () => {
+                demoObj.changeCondition(5, false);
+                demoObj.changeHealth(2)
+            }
         },
         second_fun : {
-
+            price: 0,
+            action: () => {
+                demoObj.changeCondition(5, false);
+                demoObj.changeHealth(-2)
+            }
         },
         third_fun : {
-
+            price: 0,
+            action: () => {
+                demoObj.changeCondition(5, false);
+                demoObj.changeHealth(-5)
+            }
         },
         fourth_fun : {
-
+            price: 0,
+            action: () => {
+                demoObj.changeCondition(5, false);
+            }
         },
         fifth_fun : {
 
@@ -243,26 +256,89 @@ const PAGES = {
     //Работа
     work_content : {
         bomj_work : {
-            
+            action : () => demoObj.money = 5
         },
         shaverma_work : {
-
+            needEducation: 'Таблица умножения',
+            needHousing: 'Палатка',
+            action : () => demoObj.money = 5
         },
         office_work : {
-
+            needEducation: 'Школа',
+            needHousing: 'Съемная комната',
+            action : () => demoObj.money = 5
         },
         manager_work : {
-
+            needEducation: 'Колледж',
+            needHousing: 'Съемная квартира',
+            action : () => demoObj.money = 5
         },
         senior_manager_work : {
-
+            needEducation: 'Университет',
+            needHousing: 'Квартира',
+            action : () => demoObj.money = 5
         },
         ceo_work : {
-
+            needEducation: 'Иностранный университет',
+            needHousing: 'Загородный дом',
+            action : () => demoObj.money = 5
         }
     },
     //Собственность
     item_content : {
-        
+        //Жилье
+        cardboard_box : {
+
+        },
+        tent : {
+
+        },
+        rent_room : {
+
+        },
+        rent_flat : {
+
+        },
+        buy_flat : {
+
+        },
+        buy_house : {
+
+        },
+
+        //Транспорт
+        shoes : {
+
+        },
+        bike : {
+
+        },
+        cheap_car : {
+
+        },
+        car : {
+
+        },
+        cool_car : {
+
+        }
+    },
+    //Социальный статус
+    social_content : {
+        multiplication_table : {
+
+        },
+        school : {
+
+        },
+        college : {
+
+        },
+        university : {
+
+        },
+        study_abroad : {
+
+        }
     }
 }

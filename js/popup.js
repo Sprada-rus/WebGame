@@ -15,11 +15,6 @@ function Popup(settings){
     + `<p class="popup-title">${settings.textTitle}</p>`
     + '</div>';
 
-    // const blockButton = '';
-    // if (Array.isArray(settings.btnOnContent) && settings.btnOnContent.length !== 0 ){
-    //     settings.btnOnContent.foreach(i => blockButton += i);
-    // }
-
     const textContent = '<div class="popup-content">'
     + settings.textContent
     + `<div class="popup-button-block"></div>`

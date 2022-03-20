@@ -8,38 +8,29 @@ const demoObj = {
     build_obj: new Set(),
     rating_obj: 0,
     health: 50,
-    _money: 0,
-    get money() {
-        return this._money;
-    },
-    set money(value) {
-        this._money += value;
-        this.nextDay()
-    },
+    money: 0,
     condition: 50,
     days: 0,
     dangerDays: 0,
-    changeHealth: function(num, needNextDay = true) {
-        const healthNode = document.querySelector('#health_indication');
-        this.health = (this.health + num >= 100 
-            ? 100 
-            : (this.health + num <= 0 ? 0 : this.health + num));
-        healthNode.textContent = this.health + '';
+    changeProprty: function(property, num, needNextDay = true){
+        const mainProperty = ['money', 'health', 'condition'];
+
+        if(mainProperty.indexOf(property) === -1) return;
         
-        if (needNextDay) {
-            this.nextDay();
-        }
-    },
-    changeCondition: function(num, needNextDay = true) {
-        const conditionNode = document.querySelector('#condition_indication');
-        this.condition = (this.condition + num >= 100 
-            ? 100 
-            : (this.condition + num <= 0 ? 0 : this.condition + num));
-        conditionNode.textContent = this.condition + '';
+
+        const propertyNode = document.getElementById(`${property}_indication`);
         
-        if (needNextDay) {
-            this.nextDay();
+        if(mainProperty.slice(1).indexOf(property) !== -1){
+            this[property] = (this[property] + num >= 100 
+                ? 100 
+                : (this[property] + num <= 0 ? 0 : this[property] + num));
+        } else {
+            this[property] += num;
         }
+
+        propertyNode.textContent = this[property] + '';
+
+        if(needNextDay) this.nextDay();
     },
     nextDay: function(){
         this.days++;
@@ -48,12 +39,9 @@ const demoObj = {
             this.age_obj++;
         }
         console.log(`Test obj: age = ${this.age_obj}, days = ${this.days}`);
-
-        this.changeHealth(-(10 * 1), false);
-        this.changeMoney(-10 * 1, false);
-        this.changeCondition(-10 * 1, false);
-
         this.checkConditon();
+        this.changeProprty('health', -10 * 1, false);
+        this.changeProprty('condition', -10 * 1, false);
     },
     checkConditon: function(){
         if (this.dangerDays >= 3){
@@ -96,9 +84,9 @@ const setValueMenu = () => {
 
 //Проставление значения для индикаторов "Здоровье, деньги, настроение"
 const setValueOnIndicators = () => {
-    const iHealth = document.querySelector('#health_indication');
-    const iCondition = document.querySelector('#condition_indication');
-    const iMoney = document.querySelector('#money_indication');
+    const iHealth = document.getElementById('health_indication');
+    const iCondition = document.getElementById('condition_indication');
+    const iMoney = document.getElementById('money_indication');
 
     iHealth.innerHTML = demoObj.health;
     iCondition.innerHTML = demoObj.condition;
@@ -150,9 +138,27 @@ document.addEventListener('DOMContentLoaded', () => {
     testPopupNode = welcomePopup.popup;
 });
 
+//Для работы с недвижимостью объекта
+function eventOnBuildObject(){
+    // console.log(this.name);
+    if(demoObj.build_obj.delete(this.name)){
+        demoObj.changeProprty('money', this.price);
+    } else { 
+        demoObj.build_obj.add(this.name);
+        demoObj.changeProprty('money', -(this.price));
+    }
+}
 
-
-
+//Для работы с транспортом объекта
+function eventOnVehicleObject(){
+    // console.log(this.name);
+    if(demoObj.vehicle_obj.delete(this.name)){
+        demoObj.changeProprty('money', this.price);
+    } else { 
+        demoObj.vehicle_obj.add(this.name);
+        demoObj.changeProprty('money', -(this.price));
+    }
+}
 
 //Хранение объектов для каждой кнопки в разделах
 const PAGES = {
@@ -162,61 +168,61 @@ const PAGES = {
         first_service : {
             price: 0,
             action: () => {
-                demoObj.changeHealth(9);                
+                demoObj.changeProprty('health',9);                
             },
         },
         second_service : {
             price: 0,
             action: () => {
-                demoObj.changeHealth(15);
+                demoObj.changeProprty('health',15);
             },
         },
         third_service : {
             price: 0,
             action: () => {
-                demoObj.changeHealth(25);
+                demoObj.changeProprty('health',25);
             },
         },
         fourth_service : {
             price: 0,
             action: () => {
-                demoObj.changeHealth(40);
+                demoObj.changeProprty('health',40);
             },
         },
         fifth_service : {
             price: 0,
             action: () => {
-                demoObj.changeHealth(50);
+                demoObj.changeProprty('health',50);
             },
         },
         // Здоровье: Действие
         first_action : {
             action: () => {
-                demoObj.changeHealth(3);
+                demoObj.changeProprty('health',3);
             }
         },
         second_action : {
             necessary_item: 'Кросовки',
             action: () => {
-                demoObj.changeHealth(15);
+                demoObj.changeProprty('health',15);
             }
         },
         third_action : {
             necessary_item: 'Велосипед',
             action: () => {
-                demoObj.changeHealth(20);
+                demoObj.changeProprty('health',20);
             }
         },
         fourth_action : {
             price: 50000,
             action: () => {
-                demoObj.changeHealth(45);
+                demoObj.changeProprty('health',45);
             }
         },
         fifth_service : {
             price: 450000,
             action: () => {
-                demoObj.changeHealth(80);
+                demoObj.changeProprty('health',80);
             }
         }
     },
@@ -225,28 +231,28 @@ const PAGES = {
         first_fun : {
             price: 0,
             action: () => {
-                demoObj.changeCondition(5, false);
-                demoObj.changeHealth(2)
+                demoObj.changeProprty('condition', 5, false);
+                demoObj.changeProprty('health',2)
             }
         },
         second_fun : {
             price: 0,
             action: () => {
-                demoObj.changeCondition(5, false);
-                demoObj.changeHealth(-2)
+                demoObj.changeProprty('condition',5, false);
+                demoObj.changeProprty('health',-2)
             }
         },
         third_fun : {
             price: 0,
             action: () => {
-                demoObj.changeCondition(5, false);
-                demoObj.changeHealth(-5)
+                demoObj.changeProprty('condition',5, false);
+                demoObj.changeProprty('health',-5)
             }
         },
         fourth_fun : {
             price: 0,
             action: () => {
-                demoObj.changeCondition(5, false);
+                demoObj.changeProprty('condition',5, false);
             }
         },
         fifth_fun : {
@@ -256,89 +262,128 @@ const PAGES = {
     //Работа
     work_content : {
         bomj_work : {
-            action : () => demoObj.money = 5
+            action : () => demoObj.changeProprty('money', 5)
         },
         shaverma_work : {
             needEducation: 'Таблица умножения',
             needHousing: 'Палатка',
-            action : () => demoObj.money = 5
+            action : () => demoObj.changeProprty('money', 5)
         },
         office_work : {
             needEducation: 'Школа',
             needHousing: 'Съемная комната',
-            action : () => demoObj.money = 5
+            action : () => demoObj.changeProprty('money', 5)
         },
         manager_work : {
             needEducation: 'Колледж',
             needHousing: 'Съемная квартира',
-            action : () => demoObj.money = 5
+            action : () => demoObj.changeProprty('money', 5)
         },
         senior_manager_work : {
             needEducation: 'Университет',
             needHousing: 'Квартира',
-            action : () => demoObj.money = 5
+            action : () => demoObj.changeProprty('money', 5)
         },
         ceo_work : {
             needEducation: 'Иностранный университет',
             needHousing: 'Загородный дом',
-            action : () => demoObj.money = 5
+            action : () => demoObj.changeProprty('money', 5)
         }
     },
     //Собственность
     item_content : {
         //Жилье
         cardboard_box : {
-
+            price : 10,
+            name: 'Картонная каробка',
+            action : eventOnBuildObject
         },
         tent : {
-
+            price : 2500,
+            name: 'Палатка',
+            action : eventOnBuildObject
         },
         rent_room : {
-
+            price : 10000,
+            isRent: true,
+            name: '',
+            action : eventOnBuildObject
         },
         rent_flat : {
-
+            price : 25000,
+            isRent: true,
+            name: 'Картонная каробка',
+            action : eventOnBuildObject
         },
         buy_flat : {
-
+            price : 2500000,
+            name: 'Картонная каробка',
+            action : eventOnBuildObject
         },
         buy_house : {
-
+            price : 10000000,
+            name: 'Картонная каробка',
+            action : eventOnBuildObject
         },
 
         //Транспорт
         shoes : {
-
+            price : 2000,
+            name: 'Кросовки',
+            action : eventOnVehicleObject
         },
         bike : {
-
+            price : 12000,
+            name: 'Кросовки',
+            action : eventOnVehicleObject
         },
         cheap_car : {
-
+            price : 250000,
+            name: 'Кросовки',
+            action : eventOnVehicleObject
         },
         car : {
-
+            price : 800000,
+            name: 'Кросовки',
+            action : eventOnVehicleObject
         },
         cool_car : {
-
+            price : 5000000,
+            name: 'Кросовки',
+            action : eventOnVehicleObject
         }
     },
     //Социальный статус
     social_content : {
         multiplication_table : {
-
+            price : 100,
+            name : 'Таблица умножения',
+            isDisabled : demoObj.education.has(this.name),
+            action : () => demoObj.education.add(this.name)
         },
         school : {
-
+            price : 50000,
+            name : 'Школа',
+            isDisabled : demoObj.education.has(this.name),
+            action : () => demoObj.education.add(this.name)
         },
         college : {
-
+            price : 250000,
+            name : 'Колледж',
+            isDisabled : demoObj.education.has(this.name),
+            action : () => demoObj.education.add(this.name)
         },
         university : {
-
+            price : 500000,
+            name : 'Университет',
+            isDisabled : demoObj.education.has(this.name),
+            action : () => demoObj.education.add(this.name)
         },
         study_abroad : {
-
+            price : 500000,
+            name : 'Университет',
+            isDisabled : demoObj.education.has(this.name),
+            action : () => demoObj.education.add(this.name)
         }
     }
 }

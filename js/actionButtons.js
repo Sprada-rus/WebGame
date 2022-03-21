@@ -18,8 +18,8 @@ const setActionForButton = (e) => {
                 }
                 break;
             case 'fun_content':
-                price = page[elId].price;
-                if (demoObj.money < price){
+                let funPrice = page[elId].price;
+                if (demoObj.money < funPrice){
                     alert('Денег не хвататет!');
                 } else {
                     page[elId].action();

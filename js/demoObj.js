@@ -40,8 +40,8 @@ const demoObj = {
         }
         console.log(`Test obj: age = ${this.age_obj}, days = ${this.days}`);
         this.checkConditon();
-        this.changeProprty('health', -10 * 1, false);
-        this.changeProprty('condition', -10 * 1, false);
+        this.changeProprty('health', -randomIntRange(4, 10), false);
+        this.changeProprty('condition', -randomIntRange(4, 10), false);
     },
     checkConditon: function(){
         if (this.dangerDays >= 3){
@@ -140,24 +140,28 @@ document.addEventListener('DOMContentLoaded', () => {
 
 //Для работы с недвижимостью объекта
 function eventOnBuildObject(){
-    // console.log(this.name);
+    const buildNode = document.querySelector('#build_obj.main-value');
     if(demoObj.build_obj.delete(this.name)){
         demoObj.changeProprty('money', this.price);
     } else { 
         demoObj.build_obj.add(this.name);
         demoObj.changeProprty('money', -(this.price));
     }
+
+    buildNode.textContent = demoObj.build_obj.size > 0 ? Array.from(demoObj.build_obj).join(', ') : 'Пусто';
 }
 
 //Для работы с транспортом объекта
 function eventOnVehicleObject(){
-    // console.log(this.name);
+    const vehicleNode = document.querySelector('#vehicle_obj.main-value');
     if(demoObj.vehicle_obj.delete(this.name)){
         demoObj.changeProprty('money', this.price);
     } else { 
         demoObj.vehicle_obj.add(this.name);
         demoObj.changeProprty('money', -(this.price));
     }
+
+    vehicleNode.textContent = demoObj.vehicle_obj.size > 0 ? Array.from(demoObj.vehicle_obj).join(', ') : 'Пусто';
 }
 
 //Хранение объектов для каждой кнопки в разделах
@@ -238,21 +242,21 @@ const PAGES = {
         second_fun : {
             price: 0,
             action: () => {
-                demoObj.changeProprty('condition',5, false);
+                demoObj.changeProprty('condition', 15, false);
                 demoObj.changeProprty('health',-2)
             }
         },
         third_fun : {
             price: 0,
             action: () => {
-                demoObj.changeProprty('condition',5, false);
+                demoObj.changeProprty('condition', 30, false);
                 demoObj.changeProprty('health',-5)
             }
         },
         fourth_fun : {
             price: 0,
             action: () => {
-                demoObj.changeProprty('condition',5, false);
+                demoObj.changeProprty('condition', 50, false);
             }
         },
         fifth_fun : {
@@ -306,23 +310,23 @@ const PAGES = {
         rent_room : {
             price : 10000,
             isRent: true,
-            name: '',
+            name: 'Съемная комната',
             action : eventOnBuildObject
         },
         rent_flat : {
             price : 25000,
             isRent: true,
-            name: 'Картонная каробка',
+            name: 'Съемная квартира',
             action : eventOnBuildObject
         },
         buy_flat : {
             price : 2500000,
-            name: 'Картонная каробка',
+            name: 'Квартира',
             action : eventOnBuildObject
         },
         buy_house : {
             price : 10000000,
-            name: 'Картонная каробка',
+            name: 'Загородный дом',
             action : eventOnBuildObject
         },
 
@@ -334,22 +338,22 @@ const PAGES = {
         },
         bike : {
             price : 12000,
-            name: 'Кросовки',
+            name: 'Велосипед',
             action : eventOnVehicleObject
         },
         cheap_car : {
             price : 250000,
-            name: 'Кросовки',
+            name: 'Подержанная машина',
             action : eventOnVehicleObject
         },
         car : {
             price : 800000,
-            name: 'Кросовки',
+            name: 'Машина',
             action : eventOnVehicleObject
         },
         cool_car : {
             price : 5000000,
-            name: 'Кросовки',
+            name: 'Куртая тачка',
             action : eventOnVehicleObject
         }
     },
@@ -381,7 +385,7 @@ const PAGES = {
         },
         study_abroad : {
             price : 500000,
-            name : 'Университет',
+            name : 'Иностранное образование',
             isDisabled : demoObj.education.has(this.name),
             action : () => demoObj.education.add(this.name)
         }

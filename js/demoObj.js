@@ -28,7 +28,7 @@ const demoObj = {
             this[property] += num;
         }
 
-        propertyNode.textContent = this[property] + '';
+        propertyNode.textContent = this[property].toLocaleString();
 
         if(needNextDay) this.nextDay();
     },

@@ -40,18 +40,34 @@ const demoObj = {
         }
         console.log(`Test obj: age = ${this.age_obj}, days = ${this.days}`);
         this.checkConditon();
-        this.changeProprty('health', -randomIntRange(4, 10), false);
-        this.changeProprty('condition', -randomIntRange(4, 10), false);
+        this.changeProprty('health', -randomIntRange(4, 8), false);
+        this.changeProprty('condition', -randomIntRange(4, 8), false);
     },
     checkConditon: function(){
         if (this.dangerDays >= 3){
+            const title = 'GAME OVER!';
+            const content = '<p>Вы проиграли, но вы можете начать заново.<br>Попробуем ещё раз?</p>'
+            const returnBtn = document.createElement('div');
+            returnBtn.classList.add('btn');
+            returnBtn.textContent = 'Ещё раз';
+            returnBtn.addEventListener('click', () => window.location.reload());
+
+            const settings = {
+                textContent : content,
+                textTitle : title,
+                btnOnContent : [returnBtn]
+            };            
+
+            const gameOverPop = Popup(settings);
+            gameOverPop.open();
+
             console.log('GAME OVER!');
             return;
         }
 
         const dangerCondition = [];
         this.health === 0 ? dangerCondition.push('здоровье') : null;
-        this.money <= 0 ? dangerCondition.push('деньги') : null;
+        // this.money < 0 ? dangerCondition.push('деньги') : null;
         this.condition === 0 ? dangerCondition.push('настроение') : null;
 
         if (dangerCondition.length !== 0){
@@ -235,7 +251,7 @@ const PAGES = {
         first_fun : {
             price: 0,
             action: () => {
-                demoObj.changeProprty('condition', 5, false);
+                demoObj.changeProprty('condition', 8, false);
                 demoObj.changeProprty('health',2)
             }
         },
@@ -266,32 +282,32 @@ const PAGES = {
     //Работа
     work_content : {
         bomj_work : {
-            action : () => demoObj.changeProprty('money', 5)
+            action : () => demoObj.changeProprty('money', randomIntRange(1, 5))
         },
         shaverma_work : {
             needEducation: 'Таблица умножения',
             needHousing: 'Палатка',
-            action : () => demoObj.changeProprty('money', 5)
+            action : () => demoObj.changeProprty('money', randomIntRange(100, 200))
         },
         office_work : {
             needEducation: 'Школа',
             needHousing: 'Съемная комната',
-            action : () => demoObj.changeProprty('money', 5)
+            action : () => demoObj.changeProprty('money', randomIntRange(300, 350))
         },
         manager_work : {
             needEducation: 'Колледж',
             needHousing: 'Съемная квартира',
-            action : () => demoObj.changeProprty('money', 5)
+            action : () => demoObj.changeProprty('money', randomIntRange(500, 550))
         },
         senior_manager_work : {
             needEducation: 'Университет',
             needHousing: 'Квартира',
-            action : () => demoObj.changeProprty('money', 5)
+            action : () => demoObj.changeProprty('money', randomIntRange(1000, 1500))
         },
         ceo_work : {
             needEducation: 'Иностранный университет',
             needHousing: 'Загородный дом',
-            action : () => demoObj.changeProprty('money', 5)
+            action : () => demoObj.changeProprty('money', randomIntRange(10000, 15000))
         }
     },
     //Собственность

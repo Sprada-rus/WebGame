@@ -185,70 +185,87 @@ const PAGES = {
     //Здоровье
     health_content:{
         //Здоровье: Услуги
-        first_service : {
-            price: 0,
-            action: () => {
-                demoObj.changeProprty('health',9);                
+        service: {
+            name_group: 'Услуги',
+            first_service : {
+                name: 'Знахарка',
+                price: 0,
+                action: () => {
+                    demoObj.changeProprty('health',9);                
+                },
             },
-        },
-        second_service : {
-            price: 0,
-            action: () => {
-                demoObj.changeProprty('health',15);
+            second_service : {
+                name: 'Поликлиника',
+                price: 10,
+                action: () => {
+                    demoObj.changeProprty('health',15);
+                },
             },
-        },
-        third_service : {
-            price: 0,
-            action: () => {
-                demoObj.changeProprty('health',25);
+            third_service : {
+                name: 'Поликлиника (платные услуги)',
+                price: 5000,
+                action: () => {
+                    demoObj.changeProprty('health',25);
+                },
             },
-        },
-        fourth_service : {
-            price: 0,
-            action: () => {
-                demoObj.changeProprty('health',40);
+            fourth_service : {
+                name: 'Платная клиника',
+                price: 25000,
+                action: () => {
+                    demoObj.changeProprty('health',40);
+                },
             },
-        },
-        fifth_service : {
-            price: 0,
-            action: () => {
-                demoObj.changeProprty('health',50);
+            fifth_service : {
+                name: 'Личный врач',
+                price: 50000,
+                action: () => {
+                    demoObj.changeProprty('health',50);
+                },
             },
         },
         // Здоровье: Действие
-        first_action : {
-            action: () => {
-                demoObj.changeProprty('health',3);
-            }
-        },
-        second_action : {
-            necessary_item: 'Кросовки',
-            action: () => {
-                demoObj.changeProprty('health',15);
-            }
-        },
-        third_action : {
-            necessary_item: 'Велосипед',
-            action: () => {
-                demoObj.changeProprty('health',20);
-            }
-        },
-        fourth_action : {
-            price: 50000,
-            action: () => {
-                demoObj.changeProprty('health',45);
-            }
-        },
-        fifth_service : {
-            price: 450000,
-            action: () => {
-                demoObj.changeProprty('health',80);
+        actions: {
+            name_group: 'Услуги',
+            first_action : {
+                name: 'Найти таблетки на помойке',
+                action: () => {
+                    demoObj.changeProprty('health', randomIntRange(3, 12));
+                }
+            },
+            second_action : {
+                name: 'Побегать',
+                necessary_item: 'Кросовки',
+                action: () => {
+                    demoObj.changeProprty('health',15);
+                }
+            },
+            third_action : {
+                name: 'Покататься на велосипеде',
+                necessary_item: 'Велосипед',
+                action: () => {
+                    demoObj.changeProprty('health',20);
+                }
+            },
+            fourth_action : {
+                name: 'Покататься на лыжах',
+                price: 50000,
+                action: () => {
+                    demoObj.changeProprty('health',45);
+                }
+            },
+            fifth_service : {
+                name: 'Отправиться в круиз',
+                price: 450000,
+                action: () => {
+                    demoObj.changeProprty('health',80);
+                }
             }
         }
     },
     //Развлечение
     fun_content : {
         first_fun : {
+            name: 'Выпить боярышника',
             price: 0,
             action: () => {
                 demoObj.changeProprty('condition', 8, false);
@@ -256,6 +273,7 @@ const PAGES = {
             }
         },
         second_fun : {
+            name: 'Попить пива с друзьями',
             price: 0,
             action: () => {
                 demoObj.changeProprty('condition', 15, false);
@@ -263,6 +281,7 @@ const PAGES = {
             }
         },
         third_fun : {
+            name: 'Сходить в бар',
             price: 0,
             action: () => {
                 demoObj.changeProprty('condition', 30, false);
@@ -270,41 +289,48 @@ const PAGES = {
             }
         },
         fourth_fun : {
+            name : 'Посетить театр',
             price: 0,
             action: () => {
                 demoObj.changeProprty('condition', 50, false);
             }
         },
-        fifth_fun : {
+        // fifth_fun : {
 
-        },
+        // },
     },
     //Работа
     work_content : {
         bomj_work : {
+            name : 'Побираться на помойке',
             action : () => demoObj.changeProprty('money', randomIntRange(1, 5))
         },
         shaverma_work : {
+            name : 'Шаурмен',
             needEducation: 'Таблица умножения',
             needHousing: 'Палатка',
             action : () => demoObj.changeProprty('money', randomIntRange(100, 200))
         },
         office_work : {
+            name : 'Менеджер',
             needEducation: 'Школа',
             needHousing: 'Съемная комната',
             action : () => demoObj.changeProprty('money', randomIntRange(300, 350))
         },
         manager_work : {
+            name: 'Старший менеджер',
             needEducation: 'Колледж',
             needHousing: 'Съемная квартира',
             action : () => demoObj.changeProprty('money', randomIntRange(500, 550))
         },
         senior_manager_work : {
+            name: 'Руководитель отдела',
             needEducation: 'Университет',
             needHousing: 'Квартира',
             action : () => demoObj.changeProprty('money', randomIntRange(1000, 1500))
         },
         ceo_work : {
+            name: 'Генеральный директор',
             needEducation: 'Иностранный университет',
             needHousing: 'Загородный дом',
             action : () => demoObj.changeProprty('money', randomIntRange(10000, 15000))

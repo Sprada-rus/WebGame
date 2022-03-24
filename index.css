@@ -21,7 +21,13 @@ body::-webkit-scrollbar{
     top: 0;
     right: 0;
     left: 0;
-    padding-bottom: 15px;
+    background-color: #fff;
+
+    border-bottom: 2px solid #000;
+    border-bottom-left-radius: 10px;
+    border-bottom-right-radius: 10px;
+    background-color: #fff;
+    padding-bottom: 10px;
 }
 
 .header-title{
@@ -50,10 +56,11 @@ body::-webkit-scrollbar{
     justify-content: center;
     flex-basis: 10%;
     
-    border-bottom: 1px solid #000;
+    /* border-bottom: 2px solid #000;
     border-bottom-left-radius: 10px;
     border-bottom-right-radius: 10px;
     background-color: #fff;
+    padding-bottom: 10px; */
 }
 
 #indicators .line{
@@ -77,6 +84,9 @@ body::-webkit-scrollbar{
     padding: 10px 0;
     background-color: #000;
     color: #fff;
+    margin: 5px auto;
+    width: 50%;
+    border-radius: 25px;
 }
 
 .menu{

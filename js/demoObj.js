@@ -157,6 +157,11 @@ document.addEventListener('DOMContentLoaded', () => {
 //Для работы с недвижимостью объекта
 function eventOnBuildObject(){
     const buildNode = document.querySelector('#build_obj.main-value');
+    if (this.price > demoObj.money) {
+        notification('Нехватает денег!', 2000);
+        return;
+    }
+
     if(demoObj.build_obj.delete(this.name)){
         demoObj.changeProprty('money', this.price);
     } else { 
@@ -170,6 +175,11 @@ function eventOnBuildObject(){
 //Для работы с транспортом объекта
 function eventOnVehicleObject(){
     const vehicleNode = document.querySelector('#vehicle_obj.main-value');
+    if (this.price > demoObj.money) {
+        notification('Нехватает денег!', 2000);
+        return;
+    }
+
     if(demoObj.vehicle_obj.delete(this.name)){
         demoObj.changeProprty('money', this.price);
     } else { 
@@ -178,6 +188,19 @@ function eventOnVehicleObject(){
     }
 
     vehicleNode.textContent = demoObj.vehicle_obj.size > 0 ? Array.from(demoObj.vehicle_obj).join(', ') : 'Пусто';
+}
+
+// Проверка для работы
+function jobInterview(education, build){
+    if (!demoObj.education.has(education) || !demoObj.build_obj.has(build)){
+        const tmpArray = [];
+
+        if(!demoObj.education.has(education))  tmpArray.push(education);
+        if(!demoObj.build_obj.has(build)) tmpArray.push(build);
+
+        notification(`Для работы необходимо ${tmpArray.join(' и ')}`, 800);
+        return false;
+    } else return true;
 }
 
 //Хранение объектов для каждой кнопки в разделах
@@ -190,35 +213,49 @@ const PAGES = {
             first_service : {
                 name: 'Знахарка',
                 price: 0,
-                action: () => {
-                    demoObj.changeProprty('health',9);                
-                },
+                action: () => demoObj.changeProprty('health',9)
             },
             second_service : {
                 name: 'Поликлиника',
                 price: 10,
-                action: () => {
+                action: function(){ 
+                    if (this.price > demoObj.money) {
+                        notification('Нехватает денег!', 800);
+                        return;
+                    }
                     demoObj.changeProprty('health',15);
-                },
+                }
             },
             third_service : {
                 name: 'Поликлиника (платные услуги)',
                 price: 5000,
-                action: () => {
+                action: function() {
+                    if (this.price > demoObj.money) {
+                        notification('Нехватает денег!', 800);
+                        return;
+                    }
                     demoObj.changeProprty('health',25);
                 },
             },
             fourth_service : {
                 name: 'Платная клиника',
                 price: 25000,
-                action: () => {
+                action: function() {
+                    if (this.price > demoObj.money) {
+                        notification('Нехватает денег!', 800);
+                        return;
+                    }
                     demoObj.changeProprty('health',40);
                 },
             },
             fifth_service : {
                 name: 'Личный врач',
                 price: 50000,
-                action: () => {
+                action: function() {
+                    if (this.price > demoObj.money) {
+                        notification('Нехватает денег!', 800);
+                        return;
+                    }
                     demoObj.changeProprty('health',50);
                 },
             },
@@ -249,14 +286,22 @@ const PAGES = {
             fourth_action : {
                 name: 'Покататься на лыжах',
                 price: 50000,
-                action: () => {
+                action: function() {
+                    if (this.price > demoObj.money) {
+                        notification('Нехватает денег!', 800);
+                        return;
+                    }
                     demoObj.changeProprty('health',45);
                 }
             },
             fifth_service : {
                 name: 'Отправиться в круиз',
                 price: 450000,
-                action: () => {
+                action: function() {
+                    if (this.price > demoObj.money) {
+                        notification('Нехватает денег!', 800);
+                        return;
+                    }
                     demoObj.changeProprty('health',80);
                 }
             }
@@ -266,38 +311,51 @@ const PAGES = {
     fun_content : {
         first_fun : {
             name: 'Выпить боярышника',
-            price: 0,
-            action: () => {
-                demoObj.changeProprty('condition', 8, false);
+            price: 10,
+            action: function() {
+                if (this.price > demoObj.money) {
+                    notification('Нехватает денег!', 800);
+                    return;
+                }
+                demoObj.changeProprty('condition', 15, false);
                 demoObj.changeProprty('health',2)
             }
         },
         second_fun : {
             name: 'Попить пива с друзьями',
-            price: 0,
-            action: () => {
-                demoObj.changeProprty('condition', 15, false);
+            price: 200,
+            action: function() {
+                if (this.price > demoObj.money) {
+                    notification('Нехватает денег!', 800);
+                    return;
+                }
+                demoObj.changeProprty('condition', 30, false);
                 demoObj.changeProprty('health',-2)
             }
         },
         third_fun : {
             name: 'Сходить в бар',
-            price: 0,
-            action: () => {
-                demoObj.changeProprty('condition', 30, false);
+            price: 2000,
+            action: function() {
+                if (this.price > demoObj.money) {
+                    notification('Нехватает денег!', 800);
+                    return;
+                }
+                demoObj.changeProprty('condition', 40, false);
                 demoObj.changeProprty('health',-5)
             }
         },
         fourth_fun : {
             name : 'Посетить театр',
-            price: 0,
-            action: () => {
-                demoObj.changeProprty('condition', 50, false);
+            price: 10000,
+            action: function() {
+                if (this.price > demoObj.money) {
+                    notification('Нехватает денег!', 800);
+                    return;
+                }
+                demoObj.changeProprty('condition', 65, false);
             }
         },
-        // fifth_fun : {
-
-        // },
     },
     //Работа
     work_content : {
@@ -309,31 +367,41 @@ const PAGES = {
             name : 'Шаурмен',
             needEducation: 'Таблица умножения',
             needHousing: 'Палатка',
-            action : () => demoObj.changeProprty('money', randomIntRange(100, 200))
+            action : function() {
+                if (jobInterview(this.needEducation, this.needHousing)) demoObj.changeProprty('money', randomIntRange(100, 200));
+            }
         },
         office_work : {
             name : 'Менеджер',
             needEducation: 'Школа',
             needHousing: 'Съемная комната',
-            action : () => demoObj.changeProprty('money', randomIntRange(300, 350))
+            action : function() {
+                if (jobInterview(this.needEducation, this.needHousing)) demoObj.changeProprty('money', randomIntRange(300, 350));
+            }
         },
         manager_work : {
             name: 'Старший менеджер',
             needEducation: 'Колледж',
             needHousing: 'Съемная квартира',
-            action : () => demoObj.changeProprty('money', randomIntRange(500, 550))
+            action : function() {
+                if (jobInterview(this.needEducation, this.needHousing)) demoObj.changeProprty('money', randomIntRange(500, 550));
+            }
         },
         senior_manager_work : {
             name: 'Руководитель отдела',
             needEducation: 'Университет',
             needHousing: 'Квартира',
-            action : () => demoObj.changeProprty('money', randomIntRange(1000, 1500))
+            action : function() {
+                if (jobInterview(this.needEducation, this.needHousing)) demoObj.changeProprty('money', randomIntRange(1000, 1500));
+            }
         },
         ceo_work : {
             name: 'Генеральный директор',
             needEducation: 'Иностранный университет',
             needHousing: 'Загородный дом',
-            action : () => demoObj.changeProprty('money', randomIntRange(10000, 15000))
+            action : function() {
+                if (jobInterview(this.needEducation, this.needHousing)) demoObj.changeProprty('money', randomIntRange(10000, 15000));
+            }
         }
     },
     //Собственность
@@ -405,31 +473,61 @@ const PAGES = {
             price : 100,
             name : 'Таблица умножения',
             isDisabled : demoObj.education.has(this.name),
-            action : () => demoObj.education.add(this.name)
+            action : function() {
+                if (this.price > demoObj.money) {
+                    notification('Нехватает денег!', 800);
+                    return;
+                }
+                demoObj.education.add(this.name);
+            }
         },
         school : {
             price : 50000,
             name : 'Школа',
             isDisabled : demoObj.education.has(this.name),
-            action : () => demoObj.education.add(this.name)
+            action : function() {
+                if (this.price > demoObj.money) {
+                    notification('Нехватает денег!', 800);
+                    return;
+                }
+                demoObj.education.add(this.name);
+            }
         },
         college : {
             price : 250000,
             name : 'Колледж',
             isDisabled : demoObj.education.has(this.name),
-            action : () => demoObj.education.add(this.name)
+            action : function() {
+                if (this.price > demoObj.money) {
+                    notification('Нехватает денег!', 800);
+                    return;
+                }
+                demoObj.education.add(this.name);
+            }
         },
         university : {
             price : 500000,
             name : 'Университет',
             isDisabled : demoObj.education.has(this.name),
-            action : () => demoObj.education.add(this.name)
+            action : function() {
+                if (this.price > demoObj.money) {
+                    notification('Нехватает денег!', 800);
+                    return;
+                }
+                demoObj.education.add(this.name);
+            }
         },
         study_abroad : {
             price : 500000,
             name : 'Иностранное образование',
             isDisabled : demoObj.education.has(this.name),
-            action : () => demoObj.education.add(this.name)
+            action : function() {
+                if (this.price > demoObj.money) {
+                    notification('Нехватает денег!', 800);
+                    return;
+                }
+                demoObj.education.add(this.name);
+            }
         }
     }
 }

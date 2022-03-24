@@ -1,19 +1,13 @@
-//Проверка контента для выбранного раздела
-const addActionForGroup = (content) => {
-    for(let i = 0; i < content.children.length; i++){
-        if(content.children[i].nodeName.toLowerCase() === 'div' && content.children[i].classList.contains('group-btn')){
-            checkContent(content.children[i], 'add');
-        }
-    }
-}
-
 //Функция слушателя для меню
 const actionOnMenu = (e) => {
     let checkedNode = document.querySelector('input[name="menu"]:checked');
     const content = document.querySelector(`.${checkedNode.defaultValue}-content`);
     if (e.target.nodeName == 'INPUT'){
         content.classList.remove('div-off');
-        addActionForGroup(content);
+
+        if (!content.classList.contains('main-content') && content.children.length === 0){
+            createPage(`${checkedNode.defaultValue}_content`);
+        }
     } else {
         content.classList.add('div-off');
     }

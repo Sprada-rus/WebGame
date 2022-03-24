@@ -220,9 +220,10 @@ const PAGES = {
                 price: 10,
                 action: function(){ 
                     if (this.price > demoObj.money) {
-                        notification('Нехватает денег!', 800);
+                        notification('Нехватает денег!', 1000);
                         return;
                     }
+                    demoObj.changeProprty('money', -(this.price), false);
                     demoObj.changeProprty('health',15);
                 }
             },
@@ -231,9 +232,10 @@ const PAGES = {
                 price: 5000,
                 action: function() {
                     if (this.price > demoObj.money) {
-                        notification('Нехватает денег!', 800);
+                        notification('Нехватает денег!', 1000);
                         return;
                     }
+                    demoObj.changeProprty('money', -(this.price), false);
                     demoObj.changeProprty('health',25);
                 },
             },
@@ -242,9 +244,10 @@ const PAGES = {
                 price: 25000,
                 action: function() {
                     if (this.price > demoObj.money) {
-                        notification('Нехватает денег!', 800);
+                        notification('Нехватает денег!', 1000);
                         return;
                     }
+                    demoObj.changeProprty('money', -(this.price), false);
                     demoObj.changeProprty('health',40);
                 },
             },
@@ -253,16 +256,17 @@ const PAGES = {
                 price: 50000,
                 action: function() {
                     if (this.price > demoObj.money) {
-                        notification('Нехватает денег!', 800);
+                        notification('Нехватает денег!', 1000);
                         return;
                     }
+                    demoObj.changeProprty('money', -(this.price), false);
                     demoObj.changeProprty('health',50);
                 },
             },
         },
         // Здоровье: Действие
         actions: {
-            name_group: 'Услуги',
+            name_group: 'Действия',
             first_action : {
                 name: 'Найти таблетки на помойке',
                 action: () => {
@@ -288,9 +292,10 @@ const PAGES = {
                 price: 50000,
                 action: function() {
                     if (this.price > demoObj.money) {
-                        notification('Нехватает денег!', 800);
+                        notification('Нехватает денег!', 1000);
                         return;
                     }
+                    demoObj.changeProprty('money', -(this.price), false);
                     demoObj.changeProprty('health',45);
                 }
             },
@@ -299,9 +304,10 @@ const PAGES = {
                 price: 450000,
                 action: function() {
                     if (this.price > demoObj.money) {
-                        notification('Нехватает денег!', 800);
+                        notification('Нехватает денег!', 1000);
                         return;
                     }
+                    demoObj.changeProprty('money', -(this.price), false);
                     demoObj.changeProprty('health',80);
                 }
             }
@@ -309,15 +315,22 @@ const PAGES = {
     },
     //Развлечение
     fun_content : {
+        free_fun : {
+            name: 'Гоняться за котом',
+            action : function(){
+                demoObj.changeProprty('condition', randomIntRange(15, 20));
+            }
+        },
         first_fun : {
             name: 'Выпить боярышника',
             price: 10,
             action: function() {
                 if (this.price > demoObj.money) {
-                    notification('Нехватает денег!', 800);
+                    notification('Нехватает денег!', 1000);
                     return;
                 }
-                demoObj.changeProprty('condition', 15, false);
+                demoObj.changeProprty('money', -(this.price), false);
+                demoObj.changeProprty('condition', randomIntRange(25, 30) , false);
                 demoObj.changeProprty('health',2)
             }
         },
@@ -326,10 +339,11 @@ const PAGES = {
             price: 200,
             action: function() {
                 if (this.price > demoObj.money) {
-                    notification('Нехватает денег!', 800);
+                    notification('Нехватает денег!', 1000);
                     return;
                 }
-                demoObj.changeProprty('condition', 30, false);
+                demoObj.changeProprty('money', -(this.price), false);
+                demoObj.changeProprty('condition', randomIntRange(35, 40), false);
                 demoObj.changeProprty('health',-2)
             }
         },
@@ -338,10 +352,11 @@ const PAGES = {
             price: 2000,
             action: function() {
                 if (this.price > demoObj.money) {
-                    notification('Нехватает денег!', 800);
+                    notification('Нехватает денег!', 1000);
                     return;
                 }
-                demoObj.changeProprty('condition', 40, false);
+                demoObj.changeProprty('money', -(this.price), false);
+                demoObj.changeProprty('condition', randomIntRange(45, 50), false);
                 demoObj.changeProprty('health',-5)
             }
         },
@@ -350,9 +365,10 @@ const PAGES = {
             price: 10000,
             action: function() {
                 if (this.price > demoObj.money) {
-                    notification('Нехватает денег!', 800);
+                    notification('Нехватает денег!', 1000);
                     return;
                 }
+                demoObj.changeProprty('money', -(this.price), false);
                 demoObj.changeProprty('condition', 65, false);
             }
         },
@@ -407,64 +423,69 @@ const PAGES = {
     //Собственность
     item_content : {
         //Жилье
-        cardboard_box : {
-            price : 10,
-            name: 'Картонная каробка',
-            action : eventOnBuildObject
+        build: {
+            name_group: 'Жилье',
+            cardboard_box : {
+                price : 10,
+                name: 'Картонная каробка',
+                action : eventOnBuildObject
+            },
+            tent : {
+                price : 2500,
+                name: 'Палатка',
+                action : eventOnBuildObject
+            },
+            rent_room : {
+                price : 10000,
+                isRent: true,
+                name: 'Съемная комната',
+                action : eventOnBuildObject
+            },
+            rent_flat : {
+                price : 25000,
+                isRent: true,
+                name: 'Съемная квартира',
+                action : eventOnBuildObject
+            },
+            buy_flat : {
+                price : 2500000,
+                name: 'Квартира',
+                action : eventOnBuildObject
+            },
+            buy_house : {
+                price : 10000000,
+                name: 'Загородный дом',
+                action : eventOnBuildObject
+            },
         },
-        tent : {
-            price : 2500,
-            name: 'Палатка',
-            action : eventOnBuildObject
-        },
-        rent_room : {
-            price : 10000,
-            isRent: true,
-            name: 'Съемная комната',
-            action : eventOnBuildObject
-        },
-        rent_flat : {
-            price : 25000,
-            isRent: true,
-            name: 'Съемная квартира',
-            action : eventOnBuildObject
-        },
-        buy_flat : {
-            price : 2500000,
-            name: 'Квартира',
-            action : eventOnBuildObject
-        },
-        buy_house : {
-            price : 10000000,
-            name: 'Загородный дом',
-            action : eventOnBuildObject
-        },
-
         //Транспорт
-        shoes : {
-            price : 2000,
-            name: 'Кросовки',
-            action : eventOnVehicleObject
-        },
-        bike : {
-            price : 12000,
-            name: 'Велосипед',
-            action : eventOnVehicleObject
-        },
-        cheap_car : {
-            price : 250000,
-            name: 'Подержанная машина',
-            action : eventOnVehicleObject
-        },
-        car : {
-            price : 800000,
-            name: 'Машина',
-            action : eventOnVehicleObject
-        },
-        cool_car : {
-            price : 5000000,
-            name: 'Куртая тачка',
-            action : eventOnVehicleObject
+        vehicle: {
+            name_group: 'Транспорт',
+            shoes : {
+                price : 2000,
+                name: 'Кросовки',
+                action : eventOnVehicleObject
+            },
+            bike : {
+                price : 12000,
+                name: 'Велосипед',
+                action : eventOnVehicleObject
+            },
+            cheap_car : {
+                price : 250000,
+                name: 'Подержанная машина',
+                action : eventOnVehicleObject
+            },
+            car : {
+                price : 800000,
+                name: 'Машина',
+                action : eventOnVehicleObject
+            },
+            cool_car : {
+                price : 5000000,
+                name: 'Куртая тачка',
+                action : eventOnVehicleObject
+            }
         }
     },
     //Социальный статус
@@ -475,9 +496,10 @@ const PAGES = {
             isDisabled : demoObj.education.has(this.name),
             action : function() {
                 if (this.price > demoObj.money) {
-                    notification('Нехватает денег!', 800);
+                    notification('Нехватает денег!', 1000);
                     return;
                 }
+                demoObj.changeProprty('money', -(this.price));
                 demoObj.education.add(this.name);
             }
         },
@@ -487,9 +509,10 @@ const PAGES = {
             isDisabled : demoObj.education.has(this.name),
             action : function() {
                 if (this.price > demoObj.money) {
-                    notification('Нехватает денег!', 800);
+                    notification('Нехватает денег!', 1000);
                     return;
                 }
+                demoObj.changeProprty('money', -(this.price));
                 demoObj.education.add(this.name);
             }
         },
@@ -499,9 +522,10 @@ const PAGES = {
             isDisabled : demoObj.education.has(this.name),
             action : function() {
                 if (this.price > demoObj.money) {
-                    notification('Нехватает денег!', 800);
+                    notification('Нехватает денег!', 1000);
                     return;
                 }
+                demoObj.changeProprty('money', -(this.price));
                 demoObj.education.add(this.name);
             }
         },
@@ -511,21 +535,23 @@ const PAGES = {
             isDisabled : demoObj.education.has(this.name),
             action : function() {
                 if (this.price > demoObj.money) {
-                    notification('Нехватает денег!', 800);
+                    notification('Нехватает денег!', 1000);
                     return;
                 }
+                demoObj.changeProprty('money', -(this.price));
                 demoObj.education.add(this.name);
             }
         },
         study_abroad : {
-            price : 500000,
+            price : 5000000,
             name : 'Иностранное образование',
             isDisabled : demoObj.education.has(this.name),
             action : function() {
                 if (this.price > demoObj.money) {
-                    notification('Нехватает денег!', 800);
+                    notification('Нехватает денег!', 1000);
                     return;
                 }
+                demoObj.changeProprty('money', -(this.price));
                 demoObj.education.add(this.name);
             }
         }

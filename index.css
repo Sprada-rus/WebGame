@@ -87,6 +87,12 @@ body::-webkit-scrollbar{
     margin: 5px auto;
     width: 50%;
     border-radius: 25px;
+    opacity: 0;
+    transition: opacity .2s ease-in;
+}
+
+#notification.header-info{
+    opacity: 1;
 }
 
 .menu{
@@ -192,4 +198,9 @@ body::-webkit-scrollbar{
     padding: 20px 0;
     border: #000 solid 2px;
     border-radius: 20px;
+}
+
+.disabled{
+    cursor: not-allowed !important;
+    background-color: rgb(77, 77, 77) !important;
 }

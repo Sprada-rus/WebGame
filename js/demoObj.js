@@ -12,6 +12,7 @@ const demoObj = {
     condition: 50,
     days: 0,
     dangerDays: 0,
+    rentBuild: new Map(),
     changeProprty: function(property, num, needNextDay = true){
         const mainProperty = ['money', 'health', 'condition'];
 
@@ -38,10 +39,36 @@ const demoObj = {
             this.days = 0;
             this.age_obj++;
         }
-        console.log(`Test obj: age = ${this.age_obj}, days = ${this.days}`);
+        
+        let minDamage = 5;
+        let maxDamage = 8;
+        
+        let hasRent;
+        //Есть ли жилье в аренду и надо ли платить
+        this.build_obj.forEach(element => {
+            if(element.isRent){
+                this.rentBuild.has(element.name) ? this.rentBuild.set(element.name, this.rentBuild.get(element.name) + 1)
+                : this.rentBuild.set(element.name, 0);
+
+                if(this.rentBuild.get(element.name) === 28) {
+
+                    if (demoObj.money > (element.price)){
+                        demoObj.changeProprty('money', -(element.price), flase);
+                        notification(`Плата за ${element.name} ${element.price}`, 2500);
+                    } else {
+                        
+                        notification(`Вас выгнали из ${element.name}`, 2000);
+                    }
+                }
+                hasRent = true
+            }
+        });
+        
+        if(!hasRent) this.rentBuild.clear();
+
         this.checkConditon();
-        this.changeProprty('health', -randomIntRange(4, 8), false);
-        this.changeProprty('condition', -randomIntRange(4, 8), false);
+        this.changeProprty('health', -randomIntRange(minDamage, maxDamage), false);
+        this.changeProprty('condition', -randomIntRange(minDamage, maxDamage), false);
     },
     checkConditon: function(){
         if (this.dangerDays >= 3){
@@ -158,25 +185,25 @@ document.addEventListener('DOMContentLoaded', () => {
 function eventOnBuildObject(){
     const buildNode = document.querySelector('#build_obj.main-value');
     if (this.price > demoObj.money) {
-        notification('Нехватает денег!', 2000);
+        notification('Нехватает денег!', 1500);
         return;
     }
 
-    if(demoObj.build_obj.delete(this.name)){
+    if(demoObj.build_obj.delete(this)){
         demoObj.changeProprty('money', this.price);
     } else { 
-        demoObj.build_obj.add(this.name);
+        demoObj.build_obj.add(this);
         demoObj.changeProprty('money', -(this.price));
     }
 
-    buildNode.textContent = demoObj.build_obj.size > 0 ? Array.from(demoObj.build_obj).join(', ') : 'Пусто';
+    buildNode.textContent = demoObj.build_obj.size > 0 ? Array.from(demoObj.build_obj).map(i => i.name).join(', ') : 'Пусто';
 }
 
 //Для работы с транспортом объекта
 function eventOnVehicleObject(){
     const vehicleNode = document.querySelector('#vehicle_obj.main-value');
     if (this.price > demoObj.money) {
-        notification('Нехватает денег!', 2000);
+        notification('Нехватает денег!', 1500);
         return;
     }
 
@@ -198,7 +225,7 @@ function jobInterview(education, build){
         if(!demoObj.education.has(education))  tmpArray.push(education);
         if(!demoObj.build_obj.has(build)) tmpArray.push(build);
 
-        notification(`Для работы необходимо ${tmpArray.join(' и ')}`, 800);
+        notification(`Для работы необходимо ${tmpArray.join(' и ')}`, 1500);
         return false;
     } else return true;
 }
@@ -220,7 +247,7 @@ const PAGES = {
                 price: 10,
                 action: function(){ 
                     if (this.price > demoObj.money) {
-                        notification('Нехватает денег!', 1000);
+                        notification('Нехватает денег!', 1500);
                         return;
                     }
                     demoObj.changeProprty('money', -(this.price), false);
@@ -232,7 +259,7 @@ const PAGES = {
                 price: 5000,
                 action: function() {
                     if (this.price > demoObj.money) {
-                        notification('Нехватает денег!', 1000);
+                        notification('Нехватает денег!', 1500);
                         return;
                     }
                     demoObj.changeProprty('money', -(this.price), false);
@@ -244,7 +271,7 @@ const PAGES = {
                 price: 25000,
                 action: function() {
                     if (this.price > demoObj.money) {
-                        notification('Нехватает денег!', 1000);
+                        notification('Нехватает денег!', 1500);
                         return;
                     }
                     demoObj.changeProprty('money', -(this.price), false);
@@ -256,7 +283,7 @@ const PAGES = {
                 price: 50000,
                 action: function() {
                     if (this.price > demoObj.money) {
-                        notification('Нехватает денег!', 1000);
+                        notification('Нехватает денег!', 1500);
                         return;
                     }
                     demoObj.changeProprty('money', -(this.price), false);
@@ -292,7 +319,7 @@ const PAGES = {
                 price: 50000,
                 action: function() {
                     if (this.price > demoObj.money) {
-                        notification('Нехватает денег!', 1000);
+                        notification('Нехватает денег!', 1500);
                         return;
                     }
                     demoObj.changeProprty('money', -(this.price), false);
@@ -304,7 +331,7 @@ const PAGES = {
                 price: 450000,
                 action: function() {
                     if (this.price > demoObj.money) {
-                        notification('Нехватает денег!', 1000);
+                        notification('Нехватает денег!', 1500);
                         return;
                     }
                     demoObj.changeProprty('money', -(this.price), false);
@@ -326,7 +353,7 @@ const PAGES = {
             price: 10,
             action: function() {
                 if (this.price > demoObj.money) {
-                    notification('Нехватает денег!', 1000);
+                    notification('Нехватает денег!', 1500);
                     return;
                 }
                 demoObj.changeProprty('money', -(this.price), false);
@@ -339,7 +366,7 @@ const PAGES = {
             price: 200,
             action: function() {
                 if (this.price > demoObj.money) {
-                    notification('Нехватает денег!', 1000);
+                    notification('Нехватает денег!', 1500);
                     return;
                 }
                 demoObj.changeProprty('money', -(this.price), false);
@@ -352,7 +379,7 @@ const PAGES = {
             price: 2000,
             action: function() {
                 if (this.price > demoObj.money) {
-                    notification('Нехватает денег!', 1000);
+                    notification('Нехватает денег!', 1500);
                     return;
                 }
                 demoObj.changeProprty('money', -(this.price), false);
@@ -365,7 +392,7 @@ const PAGES = {
             price: 10000,
             action: function() {
                 if (this.price > demoObj.money) {
-                    notification('Нехватает денег!', 1000);
+                    notification('Нехватает денег!', 1500);
                     return;
                 }
                 demoObj.changeProprty('money', -(this.price), false);
@@ -493,66 +520,86 @@ const PAGES = {
         multiplication_table : {
             price : 100,
             name : 'Таблица умножения',
-            isDisabled : demoObj.education.has(this.name),
+            isDisabled : () => demoObj.education.has('Таблица умножения'),
             action : function() {
                 if (this.price > demoObj.money) {
-                    notification('Нехватает денег!', 1000);
+                    notification('Нехватает денег!', 1500);
+                    return;
+                } else if (this.isDisabled()) {
                     return;
                 }
+
                 demoObj.changeProprty('money', -(this.price));
                 demoObj.education.add(this.name);
+                document.getElementById('multiplication_table').classList.add('disabled');
             }
         },
         school : {
             price : 50000,
             name : 'Школа',
-            isDisabled : demoObj.education.has(this.name),
+            isDisabled : () => demoObj.education.has('Школа'),
             action : function() {
                 if (this.price > demoObj.money) {
-                    notification('Нехватает денег!', 1000);
+                    notification('Нехватает денег!', 1500);
+                    return;
+                } else if (this.isDisabled()) {
                     return;
                 }
+
                 demoObj.changeProprty('money', -(this.price));
                 demoObj.education.add(this.name);
+                document.getElementById('school').classList.add('disabled');
             }
         },
         college : {
             price : 250000,
             name : 'Колледж',
-            isDisabled : demoObj.education.has(this.name),
+            isDisabled : () =>  demoObj.education.has('Колледж'),
             action : function() {
                 if (this.price > demoObj.money) {
-                    notification('Нехватает денег!', 1000);
+                    notification('Нехватает денег!', 1500);
+                    return;
+                } else if (this.isDisabled()) {
                     return;
                 }
+
                 demoObj.changeProprty('money', -(this.price));
                 demoObj.education.add(this.name);
+                document.getElementById('college').classList.add('disabled');
             }
         },
         university : {
             price : 500000,
             name : 'Университет',
-            isDisabled : demoObj.education.has(this.name),
+            isDisabled : () => demoObj.education.has('Университет'),
             action : function() {
                 if (this.price > demoObj.money) {
-                    notification('Нехватает денег!', 1000);
+                    notification('Нехватает денег!', 1500);
+                    return;
+                } else if (this.isDisabled()) {
                     return;
                 }
+
                 demoObj.changeProprty('money', -(this.price));
                 demoObj.education.add(this.name);
+                document.getElementById('university').classList.add('disabled');
             }
         },
         study_abroad : {
             price : 5000000,
             name : 'Иностранное образование',
-            isDisabled : demoObj.education.has(this.name),
+            isDisabled : () => demoObj.education.has('Иностранное образование'),
             action : function() {
                 if (this.price > demoObj.money) {
-                    notification('Нехватает денег!', 1000);
+                    notification('Нехватает денег!', 1500);
+                    return;
+                } else if (this.isDisabled()) {
                     return;
                 }
+
                 demoObj.changeProprty('money', -(this.price));
                 demoObj.education.add(this.name);
+                document.getElementById('study_abroad').classList.add('disabled');
             }
         }
     }

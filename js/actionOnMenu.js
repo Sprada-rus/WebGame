@@ -10,6 +10,7 @@ const actionOnMenu = (e) => {
         }
     } else {
         content.classList.add('div-off');
+        if(!content.classList.contains('main-content')) content.textContent = '';
     }
 }
 

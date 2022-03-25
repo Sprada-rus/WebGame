@@ -7,7 +7,7 @@ function createPage(pageProperty){
     }
     
     const page = document.querySelector(`.${pageProperty.replace('_', '-')}`);
-    console.log(page);
+    // console.log(page);
     const childrenPage = [];
     const getChildPage = (child, code = null) => {
         if(child?.name_group){
@@ -31,6 +31,7 @@ function createPage(pageProperty){
             const element = document.createElement('div');
             element.classList.add('btn');
             element.id = code;
+            if('isDisabled' in child && child['isDisabled']()) element.classList.add('disabled'); 
             element.textContent = child['price']?.valueOf() ? `${child['name']} (${child['price']} руб.)` : child['name'];
             element.addEventListener('click', () => {child['action']()});
 

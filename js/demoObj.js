@@ -53,10 +53,10 @@ const demoObj = {
                 if(this.rentBuild.get(element.name) === 28) {
 
                     if (demoObj.money > (element.price)){
-                        demoObj.changeProprty('money', -(element.price), flase);
+                        demoObj.changeProprty('money', -(element.price), false);
                         notification(`Плата за ${element.name} ${element.price}`, 2500);
                     } else {
-                        
+                        demoObj.rentBuild.delete(element)
                         notification(`Вас выгнали из ${element.name}`, 2000);
                     }
                 }
@@ -64,7 +64,7 @@ const demoObj = {
             }
         });
         
-        if(!hasRent) this.rentBuild.clear();
+        if(!!!hasRent) this.rentBuild.clear();
 
         this.checkConditon();
         this.changeProprty('health', -randomIntRange(minDamage, maxDamage), false);

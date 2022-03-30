@@ -14,6 +14,7 @@ const demoObj = {
     dangerDays: 0,
     rentBuild: new Map(),
     changeProprty: function(property, num, needNextDay = true){
+        if(needNextDay) this.nextDay();
         const mainProperty = ['money', 'health', 'condition'];
 
         if(mainProperty.indexOf(property) === -1) return;
@@ -30,8 +31,6 @@ const demoObj = {
         }
 
         propertyNode.textContent = this[property].toLocaleString();
-
-        if(needNextDay) this.nextDay();
     },
     nextDay: function(){
         this.days++;
@@ -184,16 +183,18 @@ document.addEventListener('DOMContentLoaded', () => {
 //Для работы с недвижимостью объекта
 function eventOnBuildObject(){
     const buildNode = document.querySelector('#build_obj.main-value');
-    if (this.price > demoObj.money) {
+
+    const item = this.item_object;
+    if (item.price > demoObj.money) {
         notification('Нехватает денег!', 1500);
         return;
     }
 
-    if(demoObj.build_obj.delete(this)){
-        demoObj.changeProprty('money', this.price);
+    if(demoObj.build_obj.delete(item)){
+        demoObj.changeProprty('money', item.price);
     } else { 
-        demoObj.build_obj.add(this);
-        demoObj.changeProprty('money', -(this.price));
+        demoObj.build_obj.add(item);
+        demoObj.changeProprty('money', -(item.price));
     }
 
     buildNode.textContent = demoObj.build_obj.size > 0 ? Array.from(demoObj.build_obj).map(i => i.name).join(', ') : 'Пусто';
@@ -202,16 +203,18 @@ function eventOnBuildObject(){
 //Для работы с транспортом объекта
 function eventOnVehicleObject(){
     const vehicleNode = document.querySelector('#vehicle_obj.main-value');
-    if (this.price > demoObj.money) {
+
+    const item = this.item_object;
+    if (item.price > demoObj.money) {
         notification('Нехватает денег!', 1500);
         return;
     }
 
-    if(demoObj.vehicle_obj.delete(this.name)){
-        demoObj.changeProprty('money', this.price);
+    if(demoObj.vehicle_obj.delete(item.name)){
+        demoObj.changeProprty('money', item.price);
     } else { 
-        demoObj.vehicle_obj.add(this.name);
-        demoObj.changeProprty('money', -(this.price));
+        demoObj.vehicle_obj.add(item.name);
+        demoObj.changeProprty('money', -(item.price));
     }
 
     vehicleNode.textContent = demoObj.vehicle_obj.size > 0 ? Array.from(demoObj.vehicle_obj).join(', ') : 'Пусто';
@@ -453,35 +456,33 @@ const PAGES = {
         build: {
             name_group: 'Жилье',
             cardboard_box : {
-                price : 10,
-                name: 'Картонная каробка',
+                item_object : staticBuilds.cardboard_box,
+                name: 'Купить картонную каробку',
                 action : eventOnBuildObject
             },
             tent : {
-                price : 2500,
-                name: 'Палатка',
+                item_object : staticBuilds.tent,
+                name: 'Купить палатку',
                 action : eventOnBuildObject
             },
             rent_room : {
-                price : 10000,
-                isRent: true,
-                name: 'Съемная комната',
+                item_object : staticBuilds.rent_room,
+                name: 'Снимать комнату',
                 action : eventOnBuildObject
             },
             rent_flat : {
-                price : 25000,
-                isRent: true,
-                name: 'Съемная квартира',
+                item_object : staticBuilds.rent_flat,
+                name : 'Снимать квартиру',
                 action : eventOnBuildObject
             },
             buy_flat : {
-                price : 2500000,
-                name: 'Квартира',
+                item_object : staticBuilds.buy_flat,
+                name : 'Купить квартира',
                 action : eventOnBuildObject
             },
             buy_house : {
-                price : 10000000,
-                name: 'Загородный дом',
+                item_object : staticBuilds.buy_house,
+                name : 'Купить загородный дом',
                 action : eventOnBuildObject
             },
         },
@@ -489,28 +490,28 @@ const PAGES = {
         vehicle: {
             name_group: 'Транспорт',
             shoes : {
-                price : 2000,
-                name: 'Кросовки',
+                item_object : staticVehicles.shoes,
+                name: 'Купить кросовки',
                 action : eventOnVehicleObject
             },
             bike : {
-                price : 12000,
-                name: 'Велосипед',
+                item_object : staticVehicles.bike,
+                name: 'Купить велосипед',
                 action : eventOnVehicleObject
             },
             cheap_car : {
-                price : 250000,
-                name: 'Подержанная машина',
+                item_object : staticVehicles.cheap_car,
+                name: 'Купить подержанная машина',
                 action : eventOnVehicleObject
             },
             car : {
-                price : 800000,
-                name: 'Машина',
+                item_object : staticVehicles.car,
+                name: 'Купить машина',
                 action : eventOnVehicleObject
             },
             cool_car : {
-                price : 5000000,
-                name: 'Куртая тачка',
+                item_object : staticVehicles.cool_car,
+                name: 'Купить куртая тачка',
                 action : eventOnVehicleObject
             }
         }

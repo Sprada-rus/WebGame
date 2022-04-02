@@ -23,13 +23,22 @@
 }
 
 .popup-open .popup-main{
-    transform: translateY(100px);
+    position: relative;
+    transform: translateY(calc(1px + 5%));
+}
+
+.popup-open.popup-backside::-webkit-scrollbar{
+    width: 0;
 }
 
 .popup-open .popup-main,
 .popup-open.popup-backside{
     opacity: 1;
     z-index: 1000;
+}
+
+.popup-open.popup-backside{
+    overflow-y: auto;
 }
 
 .popup-title{

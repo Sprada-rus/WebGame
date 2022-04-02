@@ -38,6 +38,15 @@ const demoObj = {
             this.days = 0;
             this.age_obj++;
         }
+
+        let build = this.build_obj.size > 0 
+            ? Array.from(this.build_obj)
+            : null ;
+
+        let lastBuild = build && build.sort((a, b) => b.price - a.price)[0];
+
+        let upgradeHealth = lastBuild?.amelioration_health ?? 0;
+        let upgradeCondition = lastBuild?.amelioration_fun ?? 0;
         
         let minDamage = 5;
         let maxDamage = 8;
@@ -66,8 +75,8 @@ const demoObj = {
         if(!!!hasRent) this.rentBuild.clear();
 
         this.checkConditon();
-        this.changeProprty('health', -randomIntRange(minDamage, maxDamage), false);
-        this.changeProprty('condition', -randomIntRange(minDamage, maxDamage), false);
+        this.changeProprty('health', -randomIntRange(minDamage - upgradeHealth, maxDamage - upgradeHealth), false);
+        this.changeProprty('condition', -randomIntRange(minDamage - upgradeCondition, maxDamage - upgradeCondition), false);
     },
     checkConditon: function(){
         if (this.dangerDays >= 3){
@@ -93,14 +102,13 @@ const demoObj = {
 
         const dangerCondition = [];
         this.health === 0 ? dangerCondition.push('здоровье') : null;
-        // this.money < 0 ? dangerCondition.push('деньги') : null;
         this.condition === 0 ? dangerCondition.push('настроение') : null;
 
-        if (dangerCondition.length !== 0){
+        if (dangerCondition.length !== 0 && (this.health === 0 || this.condition === 0)){
             let text = dangerCondition[0].charAt(0).toUpperCase() + dangerCondition.join(', ').slice(1);
             
             console.log(`${text} критично малы, решите проблемы за 3 дня или вы проиграете!`);
-            this.dangerDays++;
+            this.dangerDays += 1;
         } else {
             this.dangerDays = 0;
         }
@@ -226,7 +234,7 @@ function jobInterview(education, build){
         const tmpArray = [];
 
         if(!demoObj.education.has(education))  tmpArray.push(education);
-        if(!demoObj.build_obj.has(build)) tmpArray.push(build);
+        if(! Array.from(demoObj.build_obj).find(b => b.name === build)) tmpArray.push(build);
 
         notification(`Для работы необходимо ${tmpArray.join(' и ')}`, 1500);
         return false;
@@ -457,31 +465,37 @@ const PAGES = {
             name_group: 'Жилье',
             cardboard_box : {
                 item_object : staticBuilds.cardboard_box,
+                price: staticBuilds.cardboard_box.price,
                 name: 'Купить картонную каробку',
                 action : eventOnBuildObject
             },
             tent : {
                 item_object : staticBuilds.tent,
+                price: staticBuilds.tent.price,
                 name: 'Купить палатку',
                 action : eventOnBuildObject
             },
             rent_room : {
                 item_object : staticBuilds.rent_room,
+                price: staticBuilds.rent_room.price,
                 name: 'Снимать комнату',
                 action : eventOnBuildObject
             },
             rent_flat : {
                 item_object : staticBuilds.rent_flat,
+                price: staticBuilds.rent_flat.price,
                 name : 'Снимать квартиру',
                 action : eventOnBuildObject
             },
             buy_flat : {
                 item_object : staticBuilds.buy_flat,
+                price: staticBuilds.buy_flat.price,
                 name : 'Купить квартира',
                 action : eventOnBuildObject
             },
             buy_house : {
                 item_object : staticBuilds.buy_house,
+                price: staticBuilds.buy_house.price,
                 name : 'Купить загородный дом',
                 action : eventOnBuildObject
             },
@@ -491,26 +505,31 @@ const PAGES = {
             name_group: 'Транспорт',
             shoes : {
                 item_object : staticVehicles.shoes,
+                price: staticVehicles.shoes.price,
                 name: 'Купить кросовки',
                 action : eventOnVehicleObject
             },
             bike : {
                 item_object : staticVehicles.bike,
+                price: staticVehicles.bike.price,
                 name: 'Купить велосипед',
                 action : eventOnVehicleObject
             },
             cheap_car : {
                 item_object : staticVehicles.cheap_car,
+                price: staticVehicles.cheap_car.price,
                 name: 'Купить подержанная машина',
                 action : eventOnVehicleObject
             },
             car : {
                 item_object : staticVehicles.car,
+                price: staticVehicles.car.price,
                 name: 'Купить машина',
                 action : eventOnVehicleObject
             },
             cool_car : {
                 item_object : staticVehicles.cool_car,
+                price: staticVehicles.cool_car.price,
                 name: 'Купить куртая тачка',
                 action : eventOnVehicleObject
             }

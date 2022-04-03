@@ -1,7 +1,7 @@
 body{
     width: 100%;
     margin: 0;
-    
+    overflow-y: auto;
     background-color: #fff;
     -moz-user-select: none;
     -khtml-user-select: none;
@@ -57,12 +57,6 @@ body::-webkit-scrollbar{
     margin: 0 auto;
     justify-content: center;
     flex-basis: 10%;
-    
-    /* border-bottom: 2px solid #000;
-    border-bottom-left-radius: 10px;
-    border-bottom-right-radius: 10px;
-    background-color: #fff;
-    padding-bottom: 10px; */
 }
 
 #indicators .line{
@@ -102,13 +96,10 @@ body::-webkit-scrollbar{
     bottom: 0;
     left: 0;
     right: 0;
-}
-
-.menu-item{
     overflow-x: auto;
 }
 
-.menu-item::-webkit-scrollbar{
+.menu::-webkit-scrollbar{
     width: 0;
 }
 
@@ -131,6 +122,7 @@ body::-webkit-scrollbar{
     border: 1px solid;
     cursor: pointer;
     font-weight: 800;
+    white-space: nowrap;
     background-color: #fff;
 }
 
@@ -205,4 +197,50 @@ body::-webkit-scrollbar{
 .disabled{
     cursor: not-allowed !important;
     background-color: rgb(77, 77, 77) !important;
+}
+
+@media (min-width:1100px) and (max-width:1199px) {
+    .header, .wrapper, .menu, .body-content{
+        width: inherit;
+        margin: 0 auto;
+    }
+}
+
+@media (min-width:700px) and (max-width:1099px) {
+    .header, .wrapper, .menu, .body-content{
+        width: inherit;
+        margin: 0 auto;
+    }
+
+    .content{
+        margin: 15% 0 10%;
+    }
+    
+}
+
+@media (min-width:400px) and (max-width:699px){
+    .header, .wrapper, .menu, .body-content{
+        width: inherit;
+        margin: 0 auto;
+    }
+
+    .indicator-img{
+        width: 20%;
+    }
+
+    .menu {
+        margin-bottom: 10px;
+    }
+
+    .content{
+        margin: 25% 0 15%;
+    }
+    
+    .group-btn{
+        padding: 0 2%;
+    }
+
+    .menu-item input[type=radio]+label{
+        width: auto;
+    }
 }

@@ -14,12 +14,11 @@ const demoObj = {
     dangerDays: 0,
     rentBuild: new Map(),
     changeProprty: function(property, num, needNextDay = true){
-        if(needNextDay) this.nextDay();
+        
         const mainProperty = ['money', 'health', 'condition'];
 
         if(mainProperty.indexOf(property) === -1) return;
         
-
         const propertyNode = document.getElementById(`${property}_indication`);
         
         if(mainProperty.slice(1).indexOf(property) !== -1){
@@ -29,6 +28,8 @@ const demoObj = {
         } else {
             this[property] += num;
         }
+
+        if(needNextDay) this.nextDay();
 
         propertyNode.textContent = this[property].toLocaleString();
     },
@@ -74,6 +75,7 @@ const demoObj = {
         
         if(!!!hasRent) this.rentBuild.clear();
 
+        
         this.checkConditon();
         this.changeProprty('health', -randomIntRange(minDamage - upgradeHealth, maxDamage - upgradeHealth), false);
         this.changeProprty('condition', -randomIntRange(minDamage - upgradeCondition, maxDamage - upgradeCondition), false);
@@ -101,13 +103,15 @@ const demoObj = {
         }
 
         const dangerCondition = [];
-        this.health === 0 ? dangerCondition.push('здоровье') : null;
-        this.condition === 0 ? dangerCondition.push('настроение') : null;
+        this.health === 0 ? dangerCondition.push('здоровьем') : null;
+        this.condition === 0 ? dangerCondition.push('настроением') : null;
 
         if (dangerCondition.length !== 0 && (this.health === 0 || this.condition === 0)){
-            let text = dangerCondition[0].charAt(0).toUpperCase() + dangerCondition.join(', ').slice(1);
-            
-            console.log(`${text} критично малы, решите проблемы за 3 дня или вы проиграете!`);
+            let text = dangerCondition.join(' и ');
+            let leftDays = 3 - this.dangerDays > 0 
+                ? `${3 - this.dangerDays} ${3 - this.dangerDays === 1 ? 'день' : 'дня'}`
+                : 'в этот день';
+            notification(`Сделайте что-то с ${text}, иначе через ${leftDays} вы проиграете!`, 1500);
             this.dangerDays += 1;
         } else {
             this.dangerDays = 0;

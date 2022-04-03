@@ -1,5 +1,6 @@
 body{
     width: 100%;
+    height: 100%;
     margin: 0;
     overflow-y: auto;
     background-color: #fff;
@@ -228,12 +229,8 @@ body::-webkit-scrollbar{
         width: 20%;
     }
 
-    .menu {
-        margin-bottom: 10px;
-    }
-
     .content{
-        margin: 25% 0 15%;
+        margin: 30% 0 15%;
     }
     
     .group-btn{

@@ -2,7 +2,18 @@
 const demoObj = {
     name_obj: 'Василий',
     age_obj: 24,
-    status_obj: 'Бомж',
+    _status_obj: staticPosition.bomjara,
+    set status_obj(status){
+        if (this._status_obj.weight < status.weight){ 
+            this._status_obj = status;
+
+            node = document.querySelector('#status_obj.main-value');
+            node.textContent = this._status_obj.name;
+        }
+    },
+    get status_obj(){
+        return this._status_obj.name;
+    },
     education: new Set(),
     vehicle_obj: new Set(),
     build_obj: new Set(),
@@ -234,11 +245,11 @@ function eventOnVehicleObject(){
 
 // Проверка для работы
 function jobInterview(education, build){
-    if (!demoObj.education.has(education) || !demoObj.build_obj.has(build)){
+    if (!Array.from(demoObj.build_obj).find(b => b.name === build) || !Array.from(demoObj.build_obj).find(b => b.name === build)){
         const tmpArray = [];
 
-        if(!demoObj.education.has(education))  tmpArray.push(education);
-        if(! Array.from(demoObj.build_obj).find(b => b.name === build)) tmpArray.push(build);
+        if(!Array.from(demoObj.build_obj).find(b => b.name === build))  tmpArray.push(education);
+        if(!Array.from(demoObj.build_obj).find(b => b.name === build))  tmpArray.push(build);
 
         notification(`Для работы необходимо ${tmpArray.join(' и ')}`, 1500);
         return false;
@@ -419,14 +430,19 @@ const PAGES = {
     work_content : {
         bomj_work : {
             name : 'Побираться на помойке',
-            action : () => demoObj.changeProprty('money', randomIntRange(1, 5))
+            action : function(){  
+                demoObj.changeProprty('money', randomIntRange(1, 5))
+            }
         },
         shaverma_work : {
             name : 'Шаурмен',
             needEducation: 'Таблица умножения',
             needHousing: 'Палатка',
             action : function() {
-                if (jobInterview(this.needEducation, this.needHousing)) demoObj.changeProprty('money', randomIntRange(100, 200));
+                if (jobInterview(this.needEducation, this.needHousing)) {
+                    demoObj.changeProprty('money', randomIntRange(100, 200));
+                    demoObj.status_obj = staticPosition.shaverma_man;
+                }
             }
         },
         office_work : {
@@ -434,7 +450,10 @@ const PAGES = {
             needEducation: 'Школа',
             needHousing: 'Съемная комната',
             action : function() {
-                if (jobInterview(this.needEducation, this.needHousing)) demoObj.changeProprty('money', randomIntRange(300, 350));
+                if (jobInterview(this.needEducation, this.needHousing)){ 
+                    demoObj.changeProprty('money', randomIntRange(300, 350));
+                    demoObj.status_obj = staticPosition.office_manager;
+                }
             }
         },
         manager_work : {
@@ -442,7 +461,10 @@ const PAGES = {
             needEducation: 'Колледж',
             needHousing: 'Съемная квартира',
             action : function() {
-                if (jobInterview(this.needEducation, this.needHousing)) demoObj.changeProprty('money', randomIntRange(500, 550));
+                if (jobInterview(this.needEducation, this.needHousing)){ 
+                    demoObj.changeProprty('money', randomIntRange(500, 550));
+                    demoObj.status_obj = staticPosition.manager;
+                }
             }
         },
         senior_manager_work : {
@@ -450,7 +472,10 @@ const PAGES = {
             needEducation: 'Университет',
             needHousing: 'Квартира',
             action : function() {
-                if (jobInterview(this.needEducation, this.needHousing)) demoObj.changeProprty('money', randomIntRange(1000, 1500));
+                if (jobInterview(this.needEducation, this.needHousing)){ 
+                    demoObj.changeProprty('money', randomIntRange(1000, 1500));
+                    demoObj.status_obj = staticPosition.senior_manager;
+                }
             }
         },
         ceo_work : {
@@ -458,7 +483,10 @@ const PAGES = {
             needEducation: 'Иностранный университет',
             needHousing: 'Загородный дом',
             action : function() {
-                if (jobInterview(this.needEducation, this.needHousing)) demoObj.changeProprty('money', randomIntRange(10000, 15000));
+                if (jobInterview(this.needEducation, this.needHousing)){ 
+                    demoObj.changeProprty('money', randomIntRange(10000, 15000));
+                    demoObj.status_obj = staticPosition.ceo;
+                }
             }
         }
     },

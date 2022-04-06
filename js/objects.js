@@ -37,7 +37,6 @@ const builds = {
     }
 };
 
-
 const vehicles = {
     shoes : {
         price : 2000,
@@ -61,5 +60,33 @@ const vehicles = {
     }
 };
 
+const position = {
+    bomjara : {
+        name: 'Бомжара',
+        weight: 1
+    },
+    shaverma_man : {
+        name: "Шаверма мастер",
+        weight: 2
+    },
+    office_manager : {
+        name: 'Офисный планктон',
+        weight: 3
+    },
+    manager : {
+        name: 'Старший менеджер',
+        weight: 4
+    },
+    senior_manager : {
+        name: 'Руководитель',
+        weight: 5
+    },
+    ceo : {
+        name: 'Главный из главных',
+        weight: 6
+    }
+};
+
 const staticBuilds = Object.freeze(builds);
 const staticVehicles = Object.freeze(vehicles);
+const staticPosition = Object.freeze(position);

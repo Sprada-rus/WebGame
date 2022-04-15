@@ -1,3 +1,5 @@
+const player = new Player({name: 'Иван', age: 18});
+
 //Пользовательский объект 
 const demoObj = {
     name_obj: 'Василий',
@@ -137,9 +139,9 @@ const setValueMenu = () => {
     for(let el of mainContent.children){
         let elementId = el.children[1].id;
         let nodeValue = '';
-        if(demoObj[elementId].toString() === '[object Set]'){
+        if(demoObj[elementId] instanceof Set){
             nodeValue = demoObj[elementId].size > 0 ? Array.from(demoObj[elementId]).join(', ') : 'Пусто';
-        } else{
+        }else{
             nodeValue = demoObj[elementId] === null ? 'Пусто' : demoObj[elementId];
         }
 
@@ -190,7 +192,7 @@ document.addEventListener('DOMContentLoaded', () => {
         btnOnContent: [btnOK]
     };
 
-    const welcomePopup = Popup(settingsWelcome);
+    const welcomePopup = new Popup(settingsWelcome);
 
     btnOK.addEventListener('click', () => {
         setValueMenu();

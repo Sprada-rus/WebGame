@@ -7,7 +7,6 @@ function createPage(pageProperty){
     }
     
     const page = document.querySelector(`.${pageProperty.replace('_', '-')}`);
-    // console.log(page);
     const childrenPage = [];
     const getChildPage = (child, code = null) => {
         if(child?.name_group){

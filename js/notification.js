@@ -1,4 +1,4 @@
-const notification = (text, time) => {
+export const notification = (text, time) => {
     const header = document.querySelector('.header');
     const notifiElement = document.getElementById('notification');
     if (!notifiElement){

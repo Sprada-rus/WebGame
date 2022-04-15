@@ -1,3 +1,6 @@
+import { notification } from "./notification.js";
+import { Player } from "./player.js";
+
 const player = new Player({name: 'Иван', age: 18});
 
 //Пользовательский объект 
@@ -192,17 +195,19 @@ document.addEventListener('DOMContentLoaded', () => {
         btnOnContent: [btnOK]
     };
 
-    const welcomePopup = new Popup(settingsWelcome);
+    notification('aaaa it\'s worked!!!', 5000)
 
-    btnOK.addEventListener('click', () => {
-        setValueMenu();
-        setValueOnIndicators();
-        welcomePopup.destroy();
-    });
+    // const welcomePopup = new Popup(settingsWelcome);
 
-    setTimeout(() => welcomePopup.open(), 300);
+    // btnOK.addEventListener('click', () => {
+    //     setValueMenu();
+    //     setValueOnIndicators();
+    //     welcomePopup.destroy();
+    // });
 
-    testPopupNode = welcomePopup.popup;
+    // setTimeout(() => welcomePopup.open(), 300);
+
+    // testPopupNode = welcomePopup.popup;
 });
 
 //Для работы с недвижимостью объекта

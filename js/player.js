@@ -5,7 +5,7 @@
 * @argument String gameObject.name Имя персонажа
 * @argument Number gameObject.age Возраст персонажа
 */
-function Player(gameObject){
+export function Player(gameObject){
   if(!gameObject.name && !gameObject.age){
     throw new Error(`Object hasn't name or age property`);
   }

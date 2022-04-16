@@ -1,4 +1,6 @@
-function createPage(pageProperty){
+import { PAGES } from "./demoObj.js";
+
+export function createPage(pageProperty){
     const property = PAGES[pageProperty];
 
     if (typeof property === 'undefined'){

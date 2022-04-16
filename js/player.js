@@ -1,3 +1,7 @@
+import { randomIntRange } from "./randomHelp.js";
+import { notification } from "./notification.js";
+import { Popup } from "./popup.js";
+
 /**
 * Данный класс создает игровой объект с которым в лаьнейшем будут происходить манипуляции
 * Для корректной работы необходимо передавать следующие значени:
@@ -5,14 +9,10 @@
 * @argument String gameObject.name Имя персонажа
 * @argument Number gameObject.age Возраст персонажа
 */
-export function Player(gameObject){
-  if(!gameObject.name && !gameObject.age){
-    throw new Error(`Object hasn't name or age property`);
-  }
-
-  this.name = gameObject.name;
-  this.age = gameObject.age;
-  this.status = staticPosition.bomjara;
+export function Player(){
+  this.name = 'Тест';
+  this.age = 18;
+  this.status = staticPosition.bomjara.name;
   this.education = new Set();
   this.vehicle = new Set()
   this.build = new Set();
@@ -116,7 +116,7 @@ Player.prototype = {
     }
 
     if(!isOK){
-      let leftDays = `${3 - dangerDays} ${3 - dangerDays === 1 ? 'день' : 'дня'}`;
+      let leftDays = `${3 - this.dangerDays} ${3 - this.dangerDays === 1 ? 'день' : 'дня'}`;
       notification(`Внимание! Ваши показатели на нуле, исправьте это или через ${leftDays} вы проиграете`, 2000);
       this.dangerDays += 1;
     } else {

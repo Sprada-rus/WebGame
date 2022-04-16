@@ -1,170 +1,39 @@
 import { notification } from "./notification.js";
 import { Player } from "./player.js";
+import { randomIntRange } from "./randomHelp.js";
+import { Popup } from "./popup.js";
 
-const player = new Player({name: 'Иван', age: 18});
-
-//Пользовательский объект 
-const demoObj = {
-    name_obj: 'Василий',
-    age_obj: 24,
-    _status_obj: staticPosition.bomjara,
-    set status_obj(status){
-        if (this._status_obj.weight < status.weight){ 
-            this._status_obj = status;
-
-            node = document.querySelector('#status_obj.main-value');
-            node.textContent = this._status_obj.name;
-        }
-    },
-    get status_obj(){
-        return this._status_obj.name;
-    },
-    education: new Set(),
-    vehicle_obj: new Set(),
-    build_obj: new Set(),
-    rating_obj: 0,
-    health: 50,
-    money: 0,
-    condition: 50,
-    days: 0,
-    dangerDays: 0,
-    rentBuild: new Map(),
-    changeProprty: function(property, num, needNextDay = true){
-        
-        const mainProperty = ['money', 'health', 'condition'];
-
-        if(mainProperty.indexOf(property) === -1) return;
-        
-        const propertyNode = document.getElementById(`${property}_indication`);
-        
-        if(mainProperty.slice(1).indexOf(property) !== -1){
-            this[property] = (this[property] + num >= 100 
-                ? 100 
-                : (this[property] + num <= 0 ? 0 : this[property] + num));
-        } else {
-            this[property] += num;
-        }
-
-        if(needNextDay) this.nextDay();
-
-        propertyNode.textContent = this[property].toLocaleString();
-    },
-    nextDay: function(){
-        this.days++;
-        if (this.days === 365){
-            this.days = 0;
-            this.age_obj++;
-        }
-
-        let build = this.build_obj.size > 0 
-            ? Array.from(this.build_obj)
-            : null ;
-
-        let lastBuild = build && build.sort((a, b) => b.price - a.price)[0];
-
-        let upgradeHealth = lastBuild?.amelioration_health ?? 0;
-        let upgradeCondition = lastBuild?.amelioration_fun ?? 0;
-        
-        let minDamage = 5;
-        let maxDamage = 8;
-        
-        let hasRent;
-        //Есть ли жилье в аренду и надо ли платить
-        this.build_obj.forEach(element => {
-            if(element.isRent){
-                this.rentBuild.has(element.name) ? this.rentBuild.set(element.name, this.rentBuild.get(element.name) + 1)
-                : this.rentBuild.set(element.name, 0);
-
-                if(this.rentBuild.get(element.name) === 28) {
-
-                    if (demoObj.money > (element.price)){
-                        demoObj.changeProprty('money', -(element.price), false);
-                        notification(`Плата за ${element.name} ${element.price}`, 2500);
-                    } else {
-                        demoObj.rentBuild.delete(element)
-                        notification(`Вас выгнали из ${element.name}`, 2000);
-                    }
-                }
-                hasRent = true
-            }
-        });
-        
-        if(!!!hasRent) this.rentBuild.clear();
-
-        
-        this.checkConditon();
-        this.changeProprty('health', -randomIntRange(minDamage - upgradeHealth, maxDamage - upgradeHealth), false);
-        this.changeProprty('condition', -randomIntRange(minDamage - upgradeCondition, maxDamage - upgradeCondition), false);
-    },
-    checkConditon: function(){
-        if (this.dangerDays >= 3){
-            const title = 'GAME OVER!';
-            const content = '<p>Вы проиграли, но вы можете начать заново.<br>Попробуем ещё раз?</p>'
-            const returnBtn = document.createElement('div');
-            returnBtn.classList.add('btn');
-            returnBtn.textContent = 'Ещё раз';
-            returnBtn.addEventListener('click', () => window.location.reload());
-
-            const settings = {
-                textContent : content,
-                textTitle : title,
-                btnOnContent : [returnBtn]
-            };            
-
-            const gameOverPop = Popup(settings);
-            gameOverPop.open();
-
-            console.log('GAME OVER!');
-            return;
-        }
-
-        const dangerCondition = [];
-        this.health === 0 ? dangerCondition.push('здоровьем') : null;
-        this.condition === 0 ? dangerCondition.push('настроением') : null;
-
-        if (dangerCondition.length !== 0 && (this.health === 0 || this.condition === 0)){
-            let text = dangerCondition.join(' и ');
-            let leftDays = 3 - this.dangerDays > 0 
-                ? `${3 - this.dangerDays} ${3 - this.dangerDays === 1 ? 'день' : 'дня'}`
-                : 'в этот день';
-            notification(`Сделайте что-то с ${text}, иначе через ${leftDays} вы проиграете!`, 1500);
-            this.dangerDays += 1;
-        } else {
-            this.dangerDays = 0;
-        }
-    }
-}
+let PLAYER = null;
 
 //Первая загрузка страницы, проставление значений в разделе "Меню"
 const setValueMenu = () => {
     let mainContent = document.querySelector('.main-content');
 
     for(let el of mainContent.children){
-        let elementId = el.children[1].id;
+        let indexBefore = el.children[1].id.indexOf('_');
+        let elementId = el.children[1].id.substring(0, indexBefore);
         let nodeValue = '';
-        if(demoObj[elementId] instanceof Set){
-            nodeValue = demoObj[elementId].size > 0 ? Array.from(demoObj[elementId]).join(', ') : 'Пусто';
+        console.log(document.querySelector(`#${elementId}_obj`))
+        if(PLAYER[elementId] instanceof Set){
+            nodeValue = PLAYER[elementId].size > 0 ? Array.from(PLAYER[elementId]).join(', ') : 'Пусто';
         }else{
-            nodeValue = demoObj[elementId] === null ? 'Пусто' : demoObj[elementId];
+            nodeValue = PLAYER[elementId] === null ? 'Пусто' : PLAYER[elementId];
         }
 
-        document.querySelector(`#${elementId}`).textContent = nodeValue;
+        document.querySelector(`#${elementId}_obj`).innerHTML = nodeValue;
     }
 }
 
 //Проставление значения для индикаторов "Здоровье, деньги, настроение"
 const setValueOnIndicators = () => {
     const iHealth = document.getElementById('health_indication');
-    const iCondition = document.getElementById('condition_indication');
+    const iCondition = document.getElementById('sentiment_indication');
     const iMoney = document.getElementById('money_indication');
 
-    iHealth.innerHTML = demoObj.health;
-    iCondition.innerHTML = demoObj.condition;
-    iMoney.innerHTML = demoObj.money;
+    iHealth.innerHTML = PLAYER.health;
+    iCondition.innerHTML = PLAYER.sentiment;
+    iMoney.innerHTML = PLAYER.money;
 }
-
-//Тест
-let testPopupNode = '';
 
 //Запуск приветствия
 document.addEventListener('DOMContentLoaded', () => {
@@ -186,8 +55,6 @@ document.addEventListener('DOMContentLoaded', () => {
     btnOK.classList.add('btn');
     btnOK.innerText = 'OK';
 
-    // btnOK
-
     //Настройка уведомления
     const settingsWelcome = {
         textContent: content,
@@ -195,19 +62,16 @@ document.addEventListener('DOMContentLoaded', () => {
         btnOnContent: [btnOK]
     };
 
-    notification('aaaa it\'s worked!!!', 5000)
+    const welcomePopup = new Popup(settingsWelcome);
 
-    // const welcomePopup = new Popup(settingsWelcome);
+    btnOK.addEventListener('click', () => {
+        PLAYER = new Player();
+        setValueMenu();
+        setValueOnIndicators();
+        welcomePopup.destroy();
+    });
 
-    // btnOK.addEventListener('click', () => {
-    //     setValueMenu();
-    //     setValueOnIndicators();
-    //     welcomePopup.destroy();
-    // });
-
-    // setTimeout(() => welcomePopup.open(), 300);
-
-    // testPopupNode = welcomePopup.popup;
+    setTimeout(() => welcomePopup.open(), 300);
 });
 
 //Для работы с недвижимостью объекта
@@ -215,19 +79,19 @@ function eventOnBuildObject(){
     const buildNode = document.querySelector('#build_obj.main-value');
 
     const item = this.item_object;
-    if (item.price > demoObj.money) {
+    if (item.price > PLAYER.money) {
         notification('Нехватает денег!', 1500);
         return;
     }
 
-    if(demoObj.build_obj.delete(item)){
-        demoObj.changeProprty('money', item.price);
+    if(PLAYER.build_obj.delete(item)){
+        PLAYER.changeProprty('money', item.price);
     } else { 
-        demoObj.build_obj.add(item);
-        demoObj.changeProprty('money', -(item.price));
+        PLAYER.build_obj.add(item);
+        PLAYER.changeProprty('money', -(item.price));
     }
 
-    buildNode.textContent = demoObj.build_obj.size > 0 ? Array.from(demoObj.build_obj).map(i => i.name).join(', ') : 'Пусто';
+    buildNode.textContent = PLAYER.build_obj.size > 0 ? Array.from(PLAYER.build_obj).map(i => i.name).join(', ') : 'Пусто';
 }
 
 //Для работы с транспортом объекта
@@ -235,28 +99,28 @@ function eventOnVehicleObject(){
     const vehicleNode = document.querySelector('#vehicle_obj.main-value');
 
     const item = this.item_object;
-    if (item.price > demoObj.money) {
+    if (item.price > PLAYER.money) {
         notification('Нехватает денег!', 1500);
         return;
     }
 
-    if(demoObj.vehicle_obj.delete(item.name)){
-        demoObj.changeProprty('money', item.price);
+    if(PLAYER.vehicle_obj.delete(item.name)){
+        PLAYER.changeProprty('money', item.price);
     } else { 
-        demoObj.vehicle_obj.add(item.name);
-        demoObj.changeProprty('money', -(item.price));
+        PLAYER.vehicle_obj.add(item.name);
+        PLAYER.changeProprty('money', -(item.price));
     }
 
-    vehicleNode.textContent = demoObj.vehicle_obj.size > 0 ? Array.from(demoObj.vehicle_obj).join(', ') : 'Пусто';
+    vehicleNode.textContent = PLAYER.vehicle_obj.size > 0 ? Array.from(PLAYER.vehicle_obj).join(', ') : 'Пусто';
 }
 
 // Проверка для работы
 function jobInterview(education, build){
-    if (!Array.from(demoObj.build_obj).find(b => b.name === build) || !Array.from(demoObj.build_obj).find(b => b.name === build)){
+    if (!Array.from(PLAYER.build_obj).find(b => b.name === build) || !Array.from(PLAYER.build_obj).find(b => b.name === build)){
         const tmpArray = [];
 
-        if(!Array.from(demoObj.build_obj).find(b => b.name === build))  tmpArray.push(education);
-        if(!Array.from(demoObj.build_obj).find(b => b.name === build))  tmpArray.push(build);
+        if(!Array.from(PLAYER.build_obj).find(b => b.name === build))  tmpArray.push(education);
+        if(!Array.from(PLAYER.build_obj).find(b => b.name === build))  tmpArray.push(build);
 
         notification(`Для работы необходимо ${tmpArray.join(' и ')}`, 1500);
         return false;
@@ -264,7 +128,7 @@ function jobInterview(education, build){
 }
 
 //Хранение объектов для каждой кнопки в разделах
-const PAGES = {
+export const PAGES = {
     //Здоровье
     health_content:{
         //Здоровье: Услуги
@@ -273,54 +137,54 @@ const PAGES = {
             first_service : {
                 name: 'Знахарка',
                 price: 0,
-                action: () => demoObj.changeProprty('health',9)
+                action: () => PLAYER.changeProprty('health',9)
             },
             second_service : {
                 name: 'Поликлиника',
                 price: 10,
                 action: function(){ 
-                    if (this.price > demoObj.money) {
+                    if (this.price > PLAYER.money) {
                         notification('Нехватает денег!', 1500);
                         return;
                     }
-                    demoObj.changeProprty('money', -(this.price), false);
-                    demoObj.changeProprty('health',15);
+                    PLAYER.changeProprty('money', -(this.price), false);
+                    PLAYER.changeProprty('health',15);
                 }
             },
             third_service : {
                 name: 'Поликлиника (платные услуги)',
                 price: 5000,
                 action: function() {
-                    if (this.price > demoObj.money) {
+                    if (this.price > PLAYER.money) {
                         notification('Нехватает денег!', 1500);
                         return;
                     }
-                    demoObj.changeProprty('money', -(this.price), false);
-                    demoObj.changeProprty('health',25);
+                    PLAYER.changeProprty('money', -(this.price), false);
+                    PLAYER.changeProprty('health',25);
                 },
             },
             fourth_service : {
                 name: 'Платная клиника',
                 price: 25000,
                 action: function() {
-                    if (this.price > demoObj.money) {
+                    if (this.price > PLAYER.money) {
                         notification('Нехватает денег!', 1500);
                         return;
                     }
-                    demoObj.changeProprty('money', -(this.price), false);
-                    demoObj.changeProprty('health',40);
+                    PLAYER.changeProprty('money', -(this.price), false);
+                    PLAYER.changeProprty('health',40);
                 },
             },
             fifth_service : {
                 name: 'Личный врач',
                 price: 50000,
                 action: function() {
-                    if (this.price > demoObj.money) {
+                    if (this.price > PLAYER.money) {
                         notification('Нехватает денег!', 1500);
                         return;
                     }
-                    demoObj.changeProprty('money', -(this.price), false);
-                    demoObj.changeProprty('health',50);
+                    PLAYER.changeProprty('money', -(this.price), false);
+                    PLAYER.changeProprty('health',50);
                 },
             },
         },
@@ -330,45 +194,45 @@ const PAGES = {
             first_action : {
                 name: 'Найти таблетки на помойке',
                 action: () => {
-                    demoObj.changeProprty('health', randomIntRange(3, 12));
+                    PLAYER.changeProprty('health', randomIntRange(3, 12));
                 }
             },
             second_action : {
                 name: 'Побегать',
                 necessary_item: 'Кросовки',
                 action: () => {
-                    demoObj.changeProprty('health',15);
+                    PLAYER.changeProprty('health',15);
                 }
             },
             third_action : {
                 name: 'Покататься на велосипеде',
                 necessary_item: 'Велосипед',
                 action: () => {
-                    demoObj.changeProprty('health',20);
+                    PLAYER.changeProprty('health',20);
                 }
             },
             fourth_action : {
                 name: 'Покататься на лыжах',
                 price: 50000,
                 action: function() {
-                    if (this.price > demoObj.money) {
+                    if (this.price > PLAYER.money) {
                         notification('Нехватает денег!', 1500);
                         return;
                     }
-                    demoObj.changeProprty('money', -(this.price), false);
-                    demoObj.changeProprty('health',45);
+                    PLAYER.changeProprty('money', -(this.price), false);
+                    PLAYER.changeProprty('health',45);
                 }
             },
             fifth_service : {
                 name: 'Отправиться в круиз',
                 price: 450000,
                 action: function() {
-                    if (this.price > demoObj.money) {
+                    if (this.price > PLAYER.money) {
                         notification('Нехватает денег!', 1500);
                         return;
                     }
-                    demoObj.changeProprty('money', -(this.price), false);
-                    demoObj.changeProprty('health',80);
+                    PLAYER.changeProprty('money', -(this.price), false);
+                    PLAYER.changeProprty('health',80);
                 }
             }
         }
@@ -378,58 +242,58 @@ const PAGES = {
         free_fun : {
             name: 'Гоняться за котом',
             action : function(){
-                demoObj.changeProprty('condition', randomIntRange(15, 20));
+                PLAYER.changeProprty('sentiment', randomIntRange(15, 20));
             }
         },
         first_fun : {
             name: 'Выпить боярышника',
             price: 10,
             action: function() {
-                if (this.price > demoObj.money) {
+                if (this.price > PLAYER.money) {
                     notification('Нехватает денег!', 1500);
                     return;
                 }
-                demoObj.changeProprty('money', -(this.price), false);
-                demoObj.changeProprty('condition', randomIntRange(25, 30) , false);
-                demoObj.changeProprty('health',2)
+                PLAYER.changeProprty('money', -(this.price), false);
+                PLAYER.changeProprty('sentiment', randomIntRange(25, 30) , false);
+                PLAYER.changeProprty('health',2)
             }
         },
         second_fun : {
             name: 'Попить пива с друзьями',
             price: 200,
             action: function() {
-                if (this.price > demoObj.money) {
+                if (this.price > PLAYER.money) {
                     notification('Нехватает денег!', 1500);
                     return;
                 }
-                demoObj.changeProprty('money', -(this.price), false);
-                demoObj.changeProprty('condition', randomIntRange(35, 40), false);
-                demoObj.changeProprty('health',-2)
+                PLAYER.changeProprty('money', -(this.price), false);
+                PLAYER.changeProprty('sentiment', randomIntRange(35, 40), false);
+                PLAYER.changeProprty('health',-2)
             }
         },
         third_fun : {
             name: 'Сходить в бар',
             price: 2000,
             action: function() {
-                if (this.price > demoObj.money) {
+                if (this.price > PLAYER.money) {
                     notification('Нехватает денег!', 1500);
                     return;
                 }
-                demoObj.changeProprty('money', -(this.price), false);
-                demoObj.changeProprty('condition', randomIntRange(45, 50), false);
-                demoObj.changeProprty('health',-5)
+                PLAYER.changeProprty('money', -(this.price), false);
+                PLAYER.changeProprty('sentiment', randomIntRange(45, 50), false);
+                PLAYER.changeProprty('health',-5)
             }
         },
         fourth_fun : {
             name : 'Посетить театр',
             price: 10000,
             action: function() {
-                if (this.price > demoObj.money) {
+                if (this.price > PLAYER.money) {
                     notification('Нехватает денег!', 1500);
                     return;
                 }
-                demoObj.changeProprty('money', -(this.price), false);
-                demoObj.changeProprty('condition', 65, false);
+                PLAYER.changeProprty('money', -(this.price), false);
+                PLAYER.changeProprty('sentiment', 65, false);
             }
         },
     },
@@ -438,7 +302,7 @@ const PAGES = {
         bomj_work : {
             name : 'Побираться на помойке',
             action : function(){  
-                demoObj.changeProprty('money', randomIntRange(1, 5))
+                PLAYER.changeProprty('money', randomIntRange(1, 5))
             }
         },
         shaverma_work : {
@@ -447,8 +311,8 @@ const PAGES = {
             needHousing: 'Палатка',
             action : function() {
                 if (jobInterview(this.needEducation, this.needHousing)) {
-                    demoObj.changeProprty('money', randomIntRange(100, 200));
-                    demoObj.status_obj = staticPosition.shaverma_man;
+                    PLAYER.changeProprty('money', randomIntRange(100, 200));
+                    PLAYER.status_obj = staticPosition.shaverma_man;
                 }
             }
         },
@@ -458,8 +322,8 @@ const PAGES = {
             needHousing: 'Съемная комната',
             action : function() {
                 if (jobInterview(this.needEducation, this.needHousing)){ 
-                    demoObj.changeProprty('money', randomIntRange(300, 350));
-                    demoObj.status_obj = staticPosition.office_manager;
+                    PLAYER.changeProprty('money', randomIntRange(300, 350));
+                    PLAYER.status_obj = staticPosition.office_manager;
                 }
             }
         },
@@ -469,8 +333,8 @@ const PAGES = {
             needHousing: 'Съемная квартира',
             action : function() {
                 if (jobInterview(this.needEducation, this.needHousing)){ 
-                    demoObj.changeProprty('money', randomIntRange(500, 550));
-                    demoObj.status_obj = staticPosition.manager;
+                    PLAYER.changeProprty('money', randomIntRange(500, 550));
+                    PLAYER.status_obj = staticPosition.manager;
                 }
             }
         },
@@ -480,8 +344,8 @@ const PAGES = {
             needHousing: 'Квартира',
             action : function() {
                 if (jobInterview(this.needEducation, this.needHousing)){ 
-                    demoObj.changeProprty('money', randomIntRange(1000, 1500));
-                    demoObj.status_obj = staticPosition.senior_manager;
+                    PLAYER.changeProprty('money', randomIntRange(1000, 1500));
+                    PLAYER.status_obj = staticPosition.senior_manager;
                 }
             }
         },
@@ -491,8 +355,8 @@ const PAGES = {
             needHousing: 'Загородный дом',
             action : function() {
                 if (jobInterview(this.needEducation, this.needHousing)){ 
-                    demoObj.changeProprty('money', randomIntRange(10000, 15000));
-                    demoObj.status_obj = staticPosition.ceo;
+                    PLAYER.changeProprty('money', randomIntRange(10000, 15000));
+                    PLAYER.status_obj = staticPosition.ceo;
                 }
             }
         }
@@ -579,85 +443,85 @@ const PAGES = {
         multiplication_table : {
             price : 100,
             name : 'Таблица умножения',
-            isDisabled : () => demoObj.education.has('Таблица умножения'),
+            isDisabled : () => PLAYER.education.has('Таблица умножения'),
             action : function() {
-                if (this.price > demoObj.money) {
+                if (this.price > PLAYER.money) {
                     notification('Нехватает денег!', 1500);
                     return;
                 } else if (this.isDisabled()) {
                     return;
                 }
 
-                demoObj.changeProprty('money', -(this.price));
-                demoObj.education.add(this.name);
+                PLAYER.changeProprty('money', -(this.price));
+                PLAYER.education.add(this.name);
                 document.getElementById('multiplication_table').classList.add('disabled');
             }
         },
         school : {
             price : 50000,
             name : 'Школа',
-            isDisabled : () => demoObj.education.has('Школа'),
+            isDisabled : () => PLAYER.education.has('Школа'),
             action : function() {
-                if (this.price > demoObj.money) {
+                if (this.price > PLAYER.money) {
                     notification('Нехватает денег!', 1500);
                     return;
                 } else if (this.isDisabled()) {
                     return;
                 }
 
-                demoObj.changeProprty('money', -(this.price));
-                demoObj.education.add(this.name);
+                PLAYER.changeProprty('money', -(this.price));
+                PLAYER.education.add(this.name);
                 document.getElementById('school').classList.add('disabled');
             }
         },
         college : {
             price : 250000,
             name : 'Колледж',
-            isDisabled : () =>  demoObj.education.has('Колледж'),
+            isDisabled : () =>  PLAYER.education.has('Колледж'),
             action : function() {
-                if (this.price > demoObj.money) {
+                if (this.price > PLAYER.money) {
                     notification('Нехватает денег!', 1500);
                     return;
                 } else if (this.isDisabled()) {
                     return;
                 }
 
-                demoObj.changeProprty('money', -(this.price));
-                demoObj.education.add(this.name);
+                PLAYER.changeProprty('money', -(this.price));
+                PLAYER.education.add(this.name);
                 document.getElementById('college').classList.add('disabled');
             }
         },
         university : {
             price : 500000,
             name : 'Университет',
-            isDisabled : () => demoObj.education.has('Университет'),
+            isDisabled : () => PLAYER.education.has('Университет'),
             action : function() {
-                if (this.price > demoObj.money) {
+                if (this.price > PLAYER.money) {
                     notification('Нехватает денег!', 1500);
                     return;
                 } else if (this.isDisabled()) {
                     return;
                 }
 
-                demoObj.changeProprty('money', -(this.price));
-                demoObj.education.add(this.name);
+                PLAYER.changeProprty('money', -(this.price));
+                PLAYER.education.add(this.name);
                 document.getElementById('university').classList.add('disabled');
             }
         },
         study_abroad : {
             price : 5000000,
             name : 'Иностранное образование',
-            isDisabled : () => demoObj.education.has('Иностранное образование'),
+            isDisabled : () => PLAYER.education.has('Иностранное образование'),
             action : function() {
-                if (this.price > demoObj.money) {
+                if (this.price > PLAYER.money) {
                     notification('Нехватает денег!', 1500);
                     return;
                 } else if (this.isDisabled()) {
                     return;
                 }
 
-                demoObj.changeProprty('money', -(this.price));
-                demoObj.education.add(this.name);
+                PLAYER.changeProprty('money', -(this.price));
+                PLAYER.education.add(this.name);
                 document.getElementById('study_abroad').classList.add('disabled');
             }
         }

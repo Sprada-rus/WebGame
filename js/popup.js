@@ -7,7 +7,7 @@
  * @param settings.btnHeaderClose is boolean properties
  * @param settings.btnOnContent is node array properties
  */
-function Popup(settings){
+export function Popup(settings){
     const btnDestroy = !!settings.btnHeaderClose ? '<div class="popup_destroy"><span class="popup-btn-destroy header-close">X</div>' : '';
     
     const textTitle = '<div class="popup-header">'

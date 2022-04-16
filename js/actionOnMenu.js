@@ -1,3 +1,5 @@
+import { createPage } from "./actionButtons.js";
+
 //Функция слушателя для меню
 const actionOnMenu = (e) => {
     let checkedNode = document.querySelector('input[name="menu"]:checked');

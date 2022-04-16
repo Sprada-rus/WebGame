@@ -1,3 +1,3 @@
-function randomIntRange(first, last){
+export function randomIntRange(first, last){
   return Math.floor(Math.random() * (last - first) + first);
 }

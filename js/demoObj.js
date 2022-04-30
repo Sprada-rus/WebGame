@@ -13,7 +13,7 @@ const setValueMenu = () => {
         let indexBefore = el.children[1].id.indexOf('_');
         let elementId = el.children[1].id.substring(0, indexBefore);
         let nodeValue = '';
-        console.log(document.querySelector(`#${elementId}_obj`))
+        // console.log(document.querySelector(`#${elementId}_obj`))
         if(PLAYER[elementId] instanceof Set){
             nodeValue = PLAYER[elementId].size > 0 ? Array.from(PLAYER[elementId]).join(', ') : 'Пусто';
         }else{
@@ -36,51 +36,30 @@ const setValueOnIndicators = () => {
 }
 
 //Запуск приветствия
-// document.addEventListener('DOMContentLoaded', () => {
-//     const title = 'Добро пожаловать в Bomjara!';
-//     const content = '<p>Привет игрок. Это игра демо образец возможностей программиста Sprada-rus</p>'
-//     + '<p>Игра простая, но должна быть интересной. Главное что нужно, это выжить.</p>'
-//     + '<p>В игре представлены вкладки, об каждой из них поподробнее</p>'
-//     + '<ul>'
-//     + ' <li><b>Меню</b> - тут собрана вся информация по вашему игроку.</li>'
-//     + ' <li><b>Здоровье</b> - тут можно выбрать как вы будете лечить своего персонажа. Если здоровье упадет до нуля, то персонаж может умереть.</li>'
-//     + ' <li><b>Развлечение</b> - тут можно выбрать как персонаж будет развлекаться. Если настроение упадет до нуля, то персонаж может умереть от скуки.</li>'
-//     + ' <li><b>Работа</b> - устройте персонажа на работу, деньги так или иначе пригодяться для проживания в этом сложном мире.</li>'
-//     + ' <li><b>Собственность</b> - тут собраны самые лучшие варианты для проживания и для передвижения персонажа.</li>'
-//     + ' <li><b>Социальный статус</b> - собраны лучшие курсы начиная от изучения таблицы умножения и заканчивая обучением в других странах.</li>'
-//     + '</ul>'
-//     + '<p><b>Игра, на данном этапе, не сохраняется.</b> Если вы перезапустите страницу весь ваш прогресс будет утерян.</p>';
-
-//     const btnOK = document.createElement('div');
-//     btnOK.classList.add('btn');
-//     btnOK.innerText = 'OK';
-
-//     //Настройка уведомления
-//     const settingsWelcome = {
-//         textContent: content,
-//         textTitle: title,
-//         btnOnContent: [btnOK]
-//     };
-
-//     const welcomePopup = new Popup(settingsWelcome);
-
-//     btnOK.addEventListener('click', () => {
-//         PLAYER = new Player();
-//         setValueMenu();
-//         setValueOnIndicators();
-//         welcomePopup.destroy();
-//     });
-
-//     setTimeout(() => welcomePopup.open(), 300);
-// });
-
-//Запуск приветствия
 document.addEventListener('DOMContentLoaded', () => {
+    let welcomePopup;
+
     let settings = {
         textTitle: 'Добро пожаловать в Bomjara!',
         formName: 'start_game',
         submitAction: function(e){
-            console.log(e)
+            PLAYER = new Player();
+            for (let form of e){
+                if(e.length === 0) continue;
+
+                for(let field of form) {
+                    if(field.id in PLAYER){
+                        // console.log(field.value);
+                        PLAYER[field.id] = field.value;
+                    } else {
+                        throw new Error('Wrong property for Player');
+                    }
+                }
+            }
+
+            setValueMenu();
+            setValueOnIndicators();
+            welcomePopup.close();
         },
         form:{
             step_1: '<p>Привет игрок. Это игра демо образец возможностей программиста Sprada-rus</p>'
@@ -108,7 +87,7 @@ document.addEventListener('DOMContentLoaded', () => {
         }  
     }
 
-    const welcomePopup = new PopupForm(settings);
+    welcomePopup = new PopupForm(settings);
 
     setTimeout(() => welcomePopup.open(), 300);
 });
@@ -155,11 +134,11 @@ function eventOnVehicleObject(){
 
 // Проверка для работы
 function jobInterview(education, build){
-    if (!Array.from(PLAYER.build_obj).find(b => b.name === build) || !Array.from(PLAYER.build_obj).find(b => b.name === build)){
+    if (!PLAYER.build.has(build) || !PLAYER.education.has(education)){
         const tmpArray = [];
-
-        if(!Array.from(PLAYER.build_obj).find(b => b.name === build))  tmpArray.push(education);
-        if(!Array.from(PLAYER.build_obj).find(b => b.name === build))  tmpArray.push(build);
+        
+        if (!PLAYER.education.has(education)) tmpArray.push(education);
+        if (!PLAYER.build.has(build)) tmpArray.push(build);
 
         notification(`Для работы необходимо ${tmpArray.join(' и ')}`, 1500);
         return false;
@@ -239,14 +218,22 @@ export const PAGES = {
             second_action : {
                 name: 'Побегать',
                 necessary_item: 'Кросовки',
-                action: () => {
+                action: function() {
+                    if (!PLAYER.vehicle.has(this.necessary_item)){
+                        notification(`Сначала купи ${this.necessary_item.toLowerCase()}`, 1500);
+                        return;
+                    }
                     PLAYER.changeProprty('health',15);
                 }
             },
             third_action : {
                 name: 'Покататься на велосипеде',
                 necessary_item: 'Велосипед',
-                action: () => {
+                action: function() {
+                    if (!PLAYER.vehicle.has(this.necessary_item)){
+                        notification(`Сначала купи ${this.necessary_item.toLowerCase()}`, 1500);
+                        return;
+                    }
                     PLAYER.changeProprty('health',20);
                 }
             },

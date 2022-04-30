@@ -22,6 +22,13 @@
     transition: all .3s ease-out;
 }
 
+.popup-content{
+    min-height: 300px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
 .popup-open .popup-main{
     position: relative;
     transform: translateY(calc(1px + 5%));
@@ -74,6 +81,58 @@
 .disabled{
     display: none;
 }
+
+.popup-content form{
+    margin: 15px 0;
+}
+
+.popup-button-block{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: flex-end;
+}
+
+.popup-button-block button{
+    white-space: nowrap;
+    padding: 15px;
+    width: auto;
+}
+
+.popup-content form div{
+    display: flex;
+    flex-wrap: nowrap;
+    justify-content: center;
+    width: 100%;
+}
+
+.popup-content form div input{
+    border: none;
+    outline: none;
+    font-size: 12pt;
+    
+    border-bottom: 1px #000 solid;
+    background: transparent;
+    margin-bottom: 10px;
+    display: block;
+    transition: line-height .3s ease-in
+}
+
+.popup-content form div input:focus{
+    line-height: 1.50em;
+}
+
+.popup-content form div lable{
+    text-align: right;
+    width: 10%;
+    vertical-align: middle;
+}
+
+.popup-content form div lable::after{
+    content: ": ";
+    margin-right: 10px;
+}
+
 
 @media (min-width:960px) and (max-width:1139px){
     .popup-main{

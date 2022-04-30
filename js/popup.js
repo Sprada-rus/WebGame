@@ -97,36 +97,36 @@ Popup.prototype = {
  */
 
 export function PopupForm(settings){
-    this.form = document.createElement('form');
-    this.formId = settings.formName;
-    this.form.id = this.formId;
+    this.form = document.createElement('div');
+    this.form.id = settings.formName;
     this.formValues = [];
 
     if(settings.form === undefined){
         throw new Error('Form is empty');
     }
 
-    Object.entries(settings.form).forEach(([step, value], index) => {
-        let stepForm = document.createElement('div');
+    Object.entries(settings.form).forEach(([step, value]) => {
+        let stepForm = document.createElement('form');
+        
         stepForm.id = `step_${step}`;
-        if (index !== 0){
-            stepForm.classList.add('disabled');
-        }
 
         if (Object.getPrototypeOf(value) === Object.prototype){
             for(let [field, attr] of Object.entries(value)){
-                let stepField = document.createElement('input');
-                stepField.id = `${step}_${field}`;
-                stepField.type = attr.type;
+                let stepField = document.createElement('div');
+                stepField.id = `input_${field}`;
+                let input = document.createElement('input');
+                input.id = `${field}`;
+                input.type = attr.type;
 
                 if(attr.title){
                     let titleField = document.createElement('lable');
-                    titleField.htmlFor = stepField.id;
+                    titleField.htmlFor = input.id;
                     titleField.innerHTML = attr.title;
-                    stepForm.appendChild(titleField);
+                    stepField.appendChild(titleField);
                 }
 
-                stepForm.appendChild(stepField);
+                stepField.appendChild(input);
+                stepForm.append(stepField);
             }
         }
 
@@ -134,42 +134,42 @@ export function PopupForm(settings){
             stepForm.insertAdjacentHTML('afterBegin', value);
         }
 
-        this.form.append(stepForm);
+        this.formValues.push(stepForm);
     });
 
     //Костыль, пока не понял как сделать
     this.stepByStep = (e) => {
         const target = e.target.id;
-        console.log(this);
-        const arrayForm = Object.values(this.form.children);
-        const activeForm = arrayForm.find((el) => !el.classList.contains('disabled'));
-        let step = arrayForm.indexOf(activeForm);
+        // console.log(this);
+        const activeForm = document.querySelector(`#${this.form.id} form`);
+        let step = this.formValues.indexOf(activeForm);
         let activatedForm = null;
         switch(target){
             case 'form_btn_back':
-                activatedForm = arrayForm[step - 1];
-                activeForm.classList.add('disabled');
-                activatedForm.classList.remove('disabled');
-                
-                if(arrayForm.indexOf(activatedForm) === 0){
+                activatedForm = this.formValues[step - 1];
+                // activeForm.classList.add('disabled');
+                document.getElementById(`${this.form.id}`).removeChild(activeForm)
+                // activatedForm.classList.remove('disabled');
+                document.getElementById(`${this.form.id}`).append(activatedForm);
+                if(this.formValues.indexOf(activatedForm) === 0){
                     e.target.classList.add('disabled');
                 }
     
-                if(arrayForm.indexOf(activatedForm) < arrayForm.length - 1){
+                if(this.formValues.indexOf(activatedForm) < this.formValues.length - 1){
                     e.target.parentElement.children[1].innerText = 'Вперед';
                 }
                 break;
             case 'form_btn_next':
-                if(step === arrayForm.length - 1){
-                    this.form.submit();
+                if(step === this.formValues.length - 1){
+                    this.form.submit(this.formValues);
                     break;
                 }
 
                 e.target.parentElement.children[0].classList.remove('disabled');
-                activatedForm = arrayForm[step + 1];
-                activeForm.classList.add('disabled');
-                activatedForm.classList.remove('disabled');
-                if (arrayForm.indexOf(activatedForm) === arrayForm.length - 1){
+                activatedForm = this.formValues[step + 1];
+                document.getElementById(`${this.form.id}`).removeChild(activeForm);
+                document.getElementById(`${this.form.id}`).append(activatedForm);
+                if (this.formValues.indexOf(activatedForm) === this.formValues.length - 1){
                     e.target.innerText = 'Начнем играть';
                 }
                 break;
@@ -178,6 +178,7 @@ export function PopupForm(settings){
     //Конец костыля
 
     this.form.submit = settings.submitAction;
+    this.form.append(this.formValues[0]);
     const btnBack = document.createElement('button');
     btnBack.id = 'form_btn_back';
     btnBack.classList.add('btn');

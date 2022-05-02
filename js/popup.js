@@ -112,6 +112,9 @@ export function PopupForm(settings){
 
         if (Object.getPrototypeOf(value) === Object.prototype){
             for(let [field, attr] of Object.entries(value)){
+                if(field === 'scripts'){
+                    continue;
+                }
                 let stepField = document.createElement('div');
                 stepField.id = `input_${field}`;
                 let input = document.createElement('input');
@@ -125,8 +128,46 @@ export function PopupForm(settings){
                     stepField.appendChild(titleField);
                 }
 
+                if(attr.maxSize && attr.type === 'number'){
+                    input.onchange = (e) => {
+                        let value = e.target.value;
+
+                        if(value > attr.maxSize){
+                            e.target.value = attr.maxSize;
+                            dangerField(e.target);
+                        }
+
+                        if(attr.minSize && value < attr.minSize){
+                            e.target.value = attr.minSize;
+                            dangerField(e.target);
+                        }
+                    };
+                }
+
+                if(attr.maxSize && attr.type === 'text'){
+                    input.onchange = (e) => {
+                        let value = e.target.value.length;
+
+                        if(value > attr.maxSize){
+                            e.target.value = e.target.value.slice(0, attr.maxSize-1);
+                            dangerField(e.target);
+                        }
+                    };
+                }
+
+                if(attr.defaultValue){
+                    input.value = attr.defaultValue;
+                }
+
                 stepField.appendChild(input);
                 stepForm.append(stepField);
+
+            }
+
+            if(value.scripts){
+                for(let fun in value.scripts){
+                    value.scripts[fun](stepForm);
+                }
             }
         }
 
@@ -205,3 +246,8 @@ export function PopupForm(settings){
 
 PopupForm.prototype = Object.create(Popup.prototype);
 PopupForm.prototype.constructor = PopupForm;
+
+function dangerField(target){
+    target.classList.add('danger-field');
+    setTimeout(() => target.classList.remove('danger-field'), 3000);
+}

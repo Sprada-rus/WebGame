@@ -115,11 +115,12 @@
     background: transparent;
     margin-bottom: 10px;
     display: block;
-    transition: line-height .3s ease-in
+    transition: line-height .5s ease-in, 
+    border-color .3s ease-out;
 }
 
 .popup-content form div input:focus{
-    line-height: 1.50em;
+    line-height: 1.30em;
 }
 
 .popup-content form div lable{
@@ -131,6 +132,10 @@
 .popup-content form div lable::after{
     content: ": ";
     margin-right: 10px;
+}
+
+input.danger-field{
+    border-color: #ff6347 !important;
 }
 
 

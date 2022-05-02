@@ -77,12 +77,33 @@ document.addEventListener('DOMContentLoaded', () => {
             step_2: {
                 name: {
                     type: 'text',
-                    title: 'Имя'
+                    title: 'Имя',
+                    maxSize: 30,
+                    defaultValue: 'Иван'
                 },
                 age: {
                     type: 'number',
-                    title: 'Возраст'
-                }
+                    title: 'Возраст',
+                    maxSize: 40,
+                    minSize: 18,
+                    defaultValue: 18
+                },
+                scripts: {
+                    checkValues(form){
+                        form.addEventListener('keyup', (e) => {
+                            if (e.target.id === 'name'){
+                                let value = e.target.value;
+                                if (value){
+                                    e.target.value = value[0].toUpperCase() + value.slice(1);
+                                }
+
+                                if (value.match(/[^a-zA-Zа-яА-Я]/)){
+                                    e.target.value = value.replace(/[^a-zA-Zа-яА-Я]/g, '');
+                                }
+                            }
+                        })
+                    },
+                },
             },
         }  
     }

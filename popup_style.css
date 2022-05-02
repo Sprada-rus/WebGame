@@ -120,8 +120,8 @@
     border: none;
     outline: none;
     font-size: 14pt;
-    width: inherit;
-    border-bottom: 1px #000 solid;
+    width: 100%;
+    border-bottom: 1px #000 solid !important;
     background: transparent;
     padding-left: 6px;
     display: block;

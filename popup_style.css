@@ -99,33 +99,50 @@
     width: auto;
 }
 
-.popup-content form div{
+.popup-content form > div{
     display: flex;
     flex-wrap: nowrap;
-    justify-content: center;
+    justify-content: stretch;
     width: 100%;
+}
+
+.popup-content form .input-container{
+    width: 70%;
+    margin-bottom: 10px;
+}
+
+.popup-content form .input-container .input-description{
+    font-size: 12pt;
+    transition: color .3s ease-out;
 }
 
 .popup-content form div input{
     border: none;
     outline: none;
-    font-size: 12pt;
-    
+    font-size: 14pt;
+    width: inherit;
     border-bottom: 1px #000 solid;
     background: transparent;
-    margin-bottom: 10px;
+    padding-left: 6px;
     display: block;
     transition: line-height .5s ease-in, 
     border-color .3s ease-out;
 }
 
-.popup-content form div input:focus{
-    line-height: 1.30em;
+.popup-content form div input::-webkit-outer-spin-button,
+.popup-content form div input::-webkit-inner-spin-button{
+    -webkit-appearance: none;
+    margin: 0;
 }
 
-.popup-content form div lable{
+.popup-content form div input:focus{
+    line-height: 1.35em;
+}
+
+.popup-content form > div lable{
     text-align: right;
-    width: 10%;
+    font-size: 14pt;
+    width: 20%;
     vertical-align: middle;
 }
 
@@ -136,6 +153,10 @@
 
 input.danger-field{
     border-color: #ff6347 !important;
+}
+
+div.danger-field{
+    color: #ff6347 !important;
 }
 
 

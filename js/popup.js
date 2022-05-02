@@ -120,12 +120,22 @@ export function PopupForm(settings){
                 let input = document.createElement('input');
                 input.id = `${field}`;
                 input.type = attr.type;
+                let divContainer = document.createElement('div');
+                divContainer.classList.add('input-container');
+                divContainer.appendChild(input);
 
                 if(attr.title){
                     let titleField = document.createElement('lable');
                     titleField.htmlFor = input.id;
                     titleField.innerHTML = attr.title;
                     stepField.appendChild(titleField);
+                }
+
+                if(attr.description){
+                    let inputDescriprion = document.createElement('div');
+                    inputDescriprion.classList.add('input-description');
+                    inputDescriprion.innerHTML = attr.description;
+                    divContainer.appendChild(inputDescriprion);
                 }
 
                 if(attr.maxSize && attr.type === 'number'){
@@ -159,8 +169,8 @@ export function PopupForm(settings){
                     input.value = attr.defaultValue;
                 }
 
-                stepField.appendChild(input);
-                stepForm.append(stepField);
+                stepField.appendChild(divContainer);
+                stepForm.appendChild(stepField);
 
             }
 
@@ -248,6 +258,13 @@ PopupForm.prototype = Object.create(Popup.prototype);
 PopupForm.prototype.constructor = PopupForm;
 
 function dangerField(target){
+    console.log(target.parentElement);
+    let description = target.parentElement.querySelector('.input-description')
+    
     target.classList.add('danger-field');
-    setTimeout(() => target.classList.remove('danger-field'), 3000);
+    description.classList.add('danger-field');
+    setTimeout(() => {
+        description.classList.remove('danger-field');
+        target.classList.remove('danger-field');
+    }, 2000);
 }

@@ -79,14 +79,16 @@ document.addEventListener('DOMContentLoaded', () => {
                     type: 'text',
                     title: 'Имя',
                     maxSize: 30,
-                    defaultValue: 'Иван'
+                    defaultValue: 'Иван',
+                    description: 'Имя должно состоять из 30 символов'
                 },
                 age: {
                     type: 'number',
                     title: 'Возраст',
                     maxSize: 40,
                     minSize: 18,
-                    defaultValue: 18
+                    defaultValue: 18,
+                    description: 'Необходимо указать возраст от 18 до 40.'
                 },
                 scripts: {
                     checkValues(form){
